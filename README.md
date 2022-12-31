@@ -2,7 +2,7 @@
 
 ### Introduction
 
-SnippetHub is a Tauri app built with Vue that allows developers to save code snippets locally on their computer. It is similar to GitHub Gist, but it is a standalone application that does not require an Internet connection. SnippetHub is designed to be lightweight and easy to use, with features such as syntax highlighting and search functionality.
+SandCode is a Tauri app built with Vue that allows developers to save code snippets locally on their computer. It is similar to GitHub Gist, but it is a standalone application that does not require an Internet connection. SandCode is designed to be lightweight and easy to use, with features such as syntax highlighting and search functionality.
 
 ### Screenshots
 
@@ -17,15 +17,15 @@ SnippetHub is a Tauri app built with Vue that allows developers to save code sni
 
 ### Installation
 
-To install SnippetHub, follow these steps:
+To install SandCode, follow these steps:
 
-1. Download the latest release from the [releases page](https://github.com/Fanaperana/SnippetHub/releases).
+1. Download the latest release from the [releases page](https://github.com/Fanaperana/SandCode/releases).
 2. Extract the downloaded file to a directory of your choice.
-3. Run the `SnippetHub` executable file.
+3. Run the `SandCode` executable file.
 
 ### Usage
 
-To use SnippetHub, follow these steps:
+To use SandCode, follow these steps:
 
 1. Click the "New Snippet" button to create a new snippet.
 2. Enter a title and choose a programming language for your snippet.
