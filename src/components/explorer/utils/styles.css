@@ -1,0 +1,19 @@
+#explorer .active {
+    background-color: #275ac8;
+}
+
+#explorer .active:hover {
+    background-color: #346be3;
+}
+
+
+#explorer ul li div {
+    border-radius: 4px;
+    padding: 3px 5px 3px 15px;
+    margin: 1px;
+}
+
+#explorer ul li div:hover {
+    background-color: #404040;
+    cursor: default;
+}

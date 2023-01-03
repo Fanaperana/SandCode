@@ -3,18 +3,15 @@ import { GoFileDirectory } from "react-icons/go";
 
 interface Props {
     name?: string;
+    classStyle: string;
 }
 
-
-const Folder : FC<Props> = ({name}) => {
+const FolderItem: FC<Props> = ({name, classStyle}) => {
     return (
-        <div
-            className="flex gap-1 m-1"
-        >
+        <div className={`flex gap-1 m-1 ${classStyle}`}>
             <GoFileDirectory className="text-slate-400" size="19" />
             <span className="px-1 text-[14px] text-slate-200">{ name }</span>
         </div>
     );
 }
-
-export default Folder;
+export default FolderItem;

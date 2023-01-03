@@ -15,3 +15,65 @@ body,
     margin: 0;
     background-color: #312f2f;
 }
+
+@font-face {
+    font-family: "Fira Code";
+    src: url('../font/FiraCode-VariableFont_wght.ttf');
+}
+
+@font-face {
+    font-family: "Cascadia";
+    src: url("../font/Cascadia.ttf");
+}
+
+.fira-code,
+.fira-code>* {
+    font-family: "Fira Code", sans-serif;
+}
+
+.cascadia,
+.cascadia>* {
+    font-family: "Cascadia";
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    margin: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #252525;
+    padding: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    margin: 2px;
+    background: #434343;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+}
+
+/* Track */
+::-webkit-scrollbar-track:horizontal {
+    background: #252525;
+    padding: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb:horizontal {
+    border-radius: 5px;
+    margin: 2px;
+    background: #434343;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover:horizontal {
+    background: #555555;
+}
