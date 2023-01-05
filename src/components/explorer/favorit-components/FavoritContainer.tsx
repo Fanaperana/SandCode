@@ -1,7 +1,7 @@
 import { FC, useContext } from "react";
 import FavoritItem from './FavoritItem';
 import { ActiveContext } from '../contexts/ActiveContext';
-import { GoDiffAdded } from "react-icons/go";
+import { GoPlus } from "react-icons/go";
 
 
 const FavoritContainer: FC = () => {
@@ -36,8 +36,8 @@ const FavoritContainer: FC = () => {
                     Favorites
                 </div>
                 <div>
-                    <button className="hover:text-slate-200" >
-                        <GoDiffAdded size="15"/>
+                    <button className="hover:text-slate-400 text-slate-500" >
+                        <GoPlus className=" rounded-full border border-slate-500 hover:border-slate-400" size="15"/>
                     </button>
                 </div>
             </div>

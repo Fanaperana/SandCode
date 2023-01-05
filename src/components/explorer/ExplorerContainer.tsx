@@ -19,7 +19,7 @@ const ExplorerContainer: FC = () => {
     const [active, setActive] = useState <ActiveType>(toActive);
 
     return (
-        <div className="flex flex-col min-w-[200px] max-w-[200px] border-r border-[#4d4d4d] text-slate-400 text-sm p-2" id="explorer">
+        <div className="flex flex-col min-w-[200px] max-w-[200px] text-slate-400 text-sm p-2" id="explorer">
             <ActiveContext.Provider
                 value={{
                     active,

@@ -28,7 +28,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "io.sandcode.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -56,9 +56,11 @@
       {
         "fullscreen": false,
         "height": 600,
+        "width": 800,
         "resizable": true,
-        "title": "sandcode",
-        "width": 800
+        "title": "SandCode",
+        "minHeight": 200,
+        "minWidth": 200
       }
     ]
   }
