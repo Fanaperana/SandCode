@@ -88,6 +88,13 @@ body,
 .cm-content {
     font-family: "Cascadia";
     font-size: 12px;
+    /* height: 200px; */
     /** Comment this to enable font ligature */
     /* font-variant-ligatures: none; */
 }
+
+/* .cm-editor {
+    height: auto;
+    min-height: 200px;
+    max-height: none;
+} */

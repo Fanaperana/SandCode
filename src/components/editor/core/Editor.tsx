@@ -6,8 +6,16 @@ import CodeMirror from '@uiw/react-codemirror';
 import EditorToolbar from "./EditorToolbar";
 import EditorFooter from "./EditorFooter";
 
+interface EditorType {
+    index: number;
+}
 
-const Editor: FC = () => {
+const Editor: FC<EditorType> = ({ index }) => {
+    useEffect(() => {
+        console.log(index)
+    }, [])
+
+
     const onChange = useCallback((value: string) => {
         console.log('value:', value);
     }, []);
@@ -25,13 +33,12 @@ const Editor: FC = () => {
                 value={{ language, setLanguage }}
                 >
                 <div className="border rounded-sm border-slate-700 my-3">
-                    <EditorToolbar />
+                    <EditorToolbar index={index} />
                     <CodeMirror
                         className="focus:border focus:border-slate-500"
-                        value="console.log('hello world!');"
-                        height="auto"
-                        minHeight="100px"
+                        value=""
                         minWidth="0px"
+                        height="325px"
                         extensions={extensions}
                         onChange={onChange}
                         theme="dark"

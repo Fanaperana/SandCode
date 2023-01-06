@@ -7,15 +7,14 @@ const EditorFooter: FC = () => {
 
     const handleLang = (event: ChangeEvent<HTMLSelectElement>) => {
         LangContext?.setLanguage(event.target.value as LanguageName);
+        // console.log(event.target.value)
     }
 
-    const allLang = langNames.map(lang =>
-    (
+    const allLang = langNames.map(lang => (
         <option key={lang} value={lang}>
             {lang}
         </option>
-    )
-    );
+    ));
     
     return (
         <>
