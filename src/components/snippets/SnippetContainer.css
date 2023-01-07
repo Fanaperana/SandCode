@@ -11,7 +11,7 @@
 }
 
 #snippets .snippet-list div.snippet-item:hover {
-    background: #565c68;
+    background: #4b505a;
     transition-duration: .5s;
 }
 
@@ -25,12 +25,12 @@
     transition-duration: .5s;
 }
 
-#snippets .active::after {
+/* #snippets .active::after {
     content: "";
     width: 0;
     height: 0;
     border-left: 8px solid #393d45;
-    /* border-right: 6px solid #2e313b; */
+    border-right: 6px solid #2e313b;
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
     position: absolute;
@@ -43,11 +43,11 @@
     width: 0;
     height: 0;
     border-left: 8px solid #565c68;
-    /* border-right: 6px solid #3e4045; */
+    border-right: 6px solid #3e4045;
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
     position: absolute;
     right: -4px;
     top: 18px;
     transition-duration: .4s;
-}
+} */

@@ -1,9 +1,9 @@
 #explorer .active {
-    background-color: #275ac8;
+    background-color: #275ac869;
 }
 
 #explorer .active:hover {
-    background-color: #346be3;
+    background-color: #346be383;
 }
 
 
@@ -14,6 +14,6 @@
 }
 
 #explorer ul li div:hover {
-    background-color: #404040;
+    background-color: #4040404b;
     cursor: default;
 }
