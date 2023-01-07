@@ -19,7 +19,6 @@ const EditorToolbar: FC<EditorToolbarType> = ({ index }) => {
     return (
         <div className="flex justify-between p-2 bg-[#2d333b] border-b border-[#444c55]">
             <div className="flex">
-                <input type="hidden" value={index} />
                 <input 
                     type="text"
                     className="form-input px-2 w-[200px] text-xs bg-[#22272e] border-[#444c56] rounded-sm focus:border-slate-500 focus:ring-1 focus:ring-[#444c56]"

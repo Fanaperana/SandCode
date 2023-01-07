@@ -8,7 +8,7 @@ const ExplorerToolbar: FC = () => {
     const myActive = useContext(ActiveContext);
     
     return (
-        <div className="flex justify-between w-full text-slate-500 font-bold border-b border-slate-700">
+        <div className="flex justify-between w-full text-slate-500 font-bold border-b border-slate-700 p-1 pb-0 bg-black">
             <div className="text-[10px]">
                 EXPLORER
             </div>

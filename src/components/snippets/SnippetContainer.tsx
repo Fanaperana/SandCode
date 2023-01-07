@@ -45,7 +45,7 @@ const Snippet: FC = () => {
             <div className="shrink block border-b border-[#4d4d4d]">
                 <SeachInput />
             </div>
-            <div className="grow" id="snippets">
+            <div className="grow mb-2" id="snippets">
                 <div className="mx-2 py-2 h-full">
                     <div className="flex flex-col snippet-list divide-y divide-[rgb(63,63,63)] h-full">
                             {snippetList.map((s) => (

@@ -32,8 +32,9 @@ const Editor: FC<EditorType> = ({ index }) => {
             <LanguageContext.Provider
                 value={{ language, setLanguage }}
                 >
-                <div className="border rounded-sm border-slate-700 my-3">
+                <div className="relative border rounded-sm border-slate-700 my-3">
                     <EditorToolbar index={index} />
+                    <div className="absolute z-50 text-xs bg-[#414851] px-2 m-1 right-0 cursor-pointer rounded-md opacity-0 hover:opacity-75 select-none ease-in transition">here</div>
                     <CodeMirror
                         className="focus:border focus:border-slate-500"
                         value=""
