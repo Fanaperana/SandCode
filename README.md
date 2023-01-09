@@ -11,7 +11,7 @@ SandCode is a Tauri app built with Vue that allows developers to save code snipp
 ### Features
 
 - Save code snippets locally on your computer
-- Syntax highlighting for over 50 programming languages
+- Syntax highlighting for over 100 programming languages
 - Search functionality to easily find saved snippets
 - Lightweight and easy to use
 
