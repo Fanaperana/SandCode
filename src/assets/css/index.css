@@ -44,9 +44,8 @@ body,
 }
 
 ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-    margin: 2px;
+    width: 15px;
+    height: 15px;
 }
 
 /* Track */
@@ -57,7 +56,8 @@ body,
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    border-radius: 5px;
+    border: 4px solid #252525;
+    border-radius: 6px;
     margin: 2px;
     background: #434343;
 }
@@ -75,7 +75,7 @@ body,
 
 /* Handle */
 ::-webkit-scrollbar-thumb:horizontal {
-    border-radius: 5px;
+    border-radius: 6px;
     margin: 2px;
     background: #434343;
 }
@@ -98,3 +98,11 @@ body,
     min-height: 200px;
     max-height: none;
 } */
+
+@media (prefers-color-scheme: dark) {
+    .menubar {
+        background-color: #333;
+        color: #fff;
+    }
+}
+

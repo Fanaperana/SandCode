@@ -60,7 +60,8 @@
         "resizable": true,
         "title": "SandCode",
         "minHeight": 200,
-        "minWidth": 200
+        "minWidth": 200,
+        "theme": "Dark"
       }
     ]
   }
