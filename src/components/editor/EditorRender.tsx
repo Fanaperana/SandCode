@@ -20,7 +20,7 @@ const EditorRender: FC = () => {
   return (
     <>
       <EditorIndexContext.Provider value={{ editorIndex, setEditorIndex }}>
-        <div className="grow text-slate-200 bg-[#1e2625] min-w-[360px] h-full">
+        <div className="grow text-slate-200 bg-[#101718] min-w-[360px] h-full">
           <div className="flex flex-col w-full h-full">
             <div>
               <EditorHeader />
@@ -38,7 +38,7 @@ const EditorRender: FC = () => {
                 New
               </button>
             </div>
-            <div className="bg-[#323534] text-xs p-1 text-slate-400">
+            <div className="bg-[#000000] text-xs p-1 px-4 text-slate-400 border-t border-slate-800">
               <span>Snippet count: 0 </span>
             </div>
           </div>
