@@ -1,13 +1,21 @@
 import { FC } from "react";
 import EditorInputTag from "./EditorInputTag";
-import { GoListUnordered, GoCloudDownload, GoFold } from "react-icons/go";
+import {
+  GoListUnordered,
+  GoCloudDownload,
+  GoFold,
+  GoRepo,
+} from "react-icons/go";
 
 const EditorHeader: FC = () => {
   return (
     <div className="divide-y divide-slate-700/70">
       <div className="flex justify-between p-3">
         <div className="">
-          <h3 className="text-slate-400">Vue Application Modal Creation</h3>
+          <h3 className="text-gray-400 font-bold">
+            <GoRepo size="19" className="inline-block mr-3 text-gray-500" />
+            Vue Application Modal Creation
+          </h3>
         </div>
         <div className="flex gap-2">
           <button

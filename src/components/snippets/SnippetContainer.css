@@ -16,12 +16,12 @@
 }
 
 #snippets .active {
-    background-color: #393d45;
+    background-color: #345060;
     position: relative;
 }
 
 #snippets .active:hover {
-    background-color: #50545c;
+    background-color: #26363f;
     transition-duration: .5s;
 }
 
