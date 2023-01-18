@@ -15,6 +15,9 @@ const Editor: FC<EditorType> = ({ index }) => {
         console.log(index)
     }, [])
 
+    const arr = `[${langNames.map(e => {
+        return '\n{\n\tname: "'+e+'",\n\textension: \n}\n'
+    })}]`;
 
     const onChange = useCallback((value: string) => {
         console.log('value:', value);
@@ -37,7 +40,7 @@ const Editor: FC<EditorType> = ({ index }) => {
                     <div className="absolute z-50 text-xs bg-[#414851] px-2 m-1 right-0 cursor-pointer rounded-md opacity-0 hover:opacity-75 select-none ease-in transition">here</div>
                     <CodeMirror
                         className="focus:border focus:border-slate-500"
-                        value=""
+                        value={arr}
                         minWidth="0px"
                         height="325px"
                         extensions={extensions}
