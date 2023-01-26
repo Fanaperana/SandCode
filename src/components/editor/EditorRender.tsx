@@ -12,11 +12,6 @@ const EditorRender: FC = () => {
 
   const [editorIndex, setEditorIndex] = useState(initIndex);
 
-  // useEffect(() => {
-
-  //     console.log("First")
-  // }, [editorIndex.length])
-
   return (
     <>
       <EditorIndexContext.Provider value={{ editorIndex, setEditorIndex }}>
@@ -39,7 +34,7 @@ const EditorRender: FC = () => {
               </button>
             </div>
             <div className="bg-[#000000] text-xs p-1 px-4 text-slate-400 border-t border-slate-800">
-              <span>Snippet count: 0 </span>
+              <span>Snippet count: {editorIndex.length} </span>
             </div>
           </div>
         </div>
