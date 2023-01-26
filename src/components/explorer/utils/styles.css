@@ -1,16 +1,16 @@
 #explorer .active {
-    background-color: #275ac869;
+    background-color: #954e174d;
 }
 
 #explorer .active:hover {
-    background-color: #346be383;
+    background-color: #512c1783;
 }
 
 
 #explorer ul li div {
-    border-radius: 4px;
-    padding: 3px 5px 3px 15px;
-    margin: 1px;
+    border-radius: 0px;
+    padding: 2px 4px 2px 15px;
+    margin: 0px;
 }
 
 #explorer ul li div:hover {
