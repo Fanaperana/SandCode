@@ -6,9 +6,18 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children?: JSX.Element[] | JSX.Element;
+  btnName?: string;
+  btnFn?: () => void;
 }
 
-const Modal: FC<ModalProps> = ({ title, isOpen, onClose, children }) => {
+const Modal: FC<ModalProps> = ({
+  title,
+  isOpen,
+  onClose,
+  children,
+  btnName,
+  btnFn,
+}) => {
   if (!isOpen) {
     return null;
   }
@@ -59,11 +68,8 @@ const Modal: FC<ModalProps> = ({ title, isOpen, onClose, children }) => {
               >
                 {title ? title : "Modal Title"}
               </Dialog.Title>
-              <div className="p-2 grow">
-                <div>
-                  <span>Body in here</span>
-                  {children}
-                </div>
+              <div className="p-3 grow">
+                <div className="flex flex-col items-center justify-center h-full">{children}</div>
               </div>
               <div className="p-2 border-t border-slate-800 flex justify-end gap-2">
                 <button
@@ -72,8 +78,11 @@ const Modal: FC<ModalProps> = ({ title, isOpen, onClose, children }) => {
                 >
                   Cancel
                 </button>
-                <button className="bg-[#387d3d] text-white border px-2 py-1 rounded-sm border-slate-700 hover:bg-[#2b602e]">
-                  Create
+                <button
+                  className="bg-[#387d3d] text-white border px-2 py-1 rounded-sm border-slate-700 hover:bg-[#2b602e]"
+                  onClick={btnFn}
+                >
+                  {btnName ? btnName : "Create"}
                 </button>
               </div>
             </div>

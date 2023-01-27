@@ -12,8 +12,8 @@ const ExplorerContainer: FC = () => {
 
     // Initial state use to the side explorer
     const toActive: ActiveType = {
-        index: -1,
-        type: ""
+        index: 1,
+        type: "favorit"
     };
 
     const [active, setActive] = useState <ActiveType>(toActive);
