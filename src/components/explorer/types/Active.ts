@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 export interface ActiveType {
     index: number;
-    type: "folder" | "favorit" | "tag" | string;
+    type: "folder" | "favorit" | "tag";
 }
 
 export interface ActiveContextType {
