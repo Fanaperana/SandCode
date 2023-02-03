@@ -4,7 +4,7 @@ use tauri::{
 };
 
 use rusqlite::{Connection, Result};
-use serde_json::{ Value };
+use serde_json::Value;
 
 pub fn connect() -> Result<Connection> {
     let conn = Connection::open("data.db")?;
@@ -64,7 +64,8 @@ fn create_tables(conn: &Connection) -> rusqlite::Result<()> {
         "CREATE TABLE IF NOT EXISTS codes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT DEFAULT 'new_file' NOT NULL,
-            content TEXT,
+            content TEXT DEFAULT '',
+            lang_type TEXT DEFAULT 'plain/text' NOT NULL,
             snippet_id INTEGER NOT NULL,
             FOREIGN KEY (snippet_id) REFERENCES snippets(id)
         );

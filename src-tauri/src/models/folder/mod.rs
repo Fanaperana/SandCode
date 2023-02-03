@@ -10,12 +10,12 @@
 
 use tauri::{
     plugin::{Builder, TauriPlugin},
-    Runtime,
+    AppHandle, Runtime, Window,
 };
 
 use rusqlite::{params, Connection, Result};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json::{json, Value};
 
 #[derive(Serialize, Deserialize)]
 pub struct Folder {
@@ -26,6 +26,12 @@ pub struct Folder {
 #[derive(Serialize, Deserialize)]
 pub struct FolderResponse {
     folder: Vec<Folder>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Payload {
+    msg_type: String,
+    message: String,
 }
 
 #[tauri::command]
@@ -49,9 +55,15 @@ fn fetch_all() -> Result<Value, Value> {
         folders.push(folder_item.unwrap());
     }
 
+    if folders.len() == 0 {
+        return Ok(json!([Folder {
+            id: Some(0),
+            name: "Empty".to_string()
+        }]));
+    }
     // let all = serde_json::to_string(&folders).unwrap();
     // let all_json = serde_json::from_str(&all).unwrap();
-    let json_value = serde_json::json!(folders);
+    let json_value = json!(folders);
 
     Ok(json_value)
 }
@@ -76,13 +88,17 @@ pub fn fetch_folder(folder_id: u64) -> Result<Value, Value> {
         _one.push(item.unwrap());
     }
 
-    let one = serde_json::to_string(&_one.into_iter().nth(0)).unwrap();
+    let one = _one.into_iter().nth(0);
 
-    Ok(one.into())
+    Ok(json!(one))
 }
 
 #[tauri::command]
-pub fn add_folder(folder: Folder) -> Result<Value, Value> {
+pub fn add_folder<R: Runtime>(
+    _app: AppHandle<R>,
+    _window: Window<R>,
+    folder: Folder,
+) -> Result<Value, Value> {
     let conn = Connection::open("data.db").unwrap();
 
     let name = if folder.name.is_empty() {
@@ -90,10 +106,32 @@ pub fn add_folder(folder: Folder) -> Result<Value, Value> {
     } else {
         &folder.name
     };
-    conn.execute("INSERT INTO folders (name) VALUES (?1)", params![name])
+
+    let mut stmt = conn
+        .prepare("SELECT name from folders WHERE name = ?1")
         .unwrap();
 
-    Ok(serde_json::json!(folder))
+    let folder_iter = stmt.query_map(params![name], |_| Ok(())).unwrap();
+
+    let mut folder_exists = false;
+
+    for _ in folder_iter {
+        folder_exists = true;
+        break;
+    }
+
+    if !folder_exists {
+        conn.execute("INSERT INTO folders (name) VALUES (?1)", params![name])
+            .unwrap();
+        Ok(json!(folder))
+    } else {
+        let error = Payload {
+            msg_type: "Error".to_string(),
+            message: "There is a duplications".to_string(),
+        };
+        _window.emit("Toast", json!(error)).unwrap();
+        Err(json!(error))
+    }
 }
 
 pub fn init<R: Runtime>() -> TauriPlugin<R> {

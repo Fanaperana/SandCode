@@ -11,9 +11,10 @@ import FolderItem from "./FolderItem";
 import { ActiveContext } from "../contexts/ActiveContext";
 import Modal from "../../misc/modal/Modal";
 import { invoke } from "@tauri-apps/api/tauri";
+import { listen } from "@tauri-apps/api/event";
 
 interface Folder {
-  id?: number;
+  id: number;
   name: string;
 }
 
@@ -25,15 +26,22 @@ const FolderContainer: FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    // invoke("plugin:folders|fetch_folder", { folderId: 1 }).then((d) => {
+    //   console.log(d);
+    // });
+    listen("Toast", (event) => {
+      console.log(event.payload);
+    });
+
     invoke("plugin:folders|fetch_all")
       .then((res) => {
         const foldersList = res as Folder[];
-
+        // console.log(res);
         if (foldersList.length) {
           setFolders(foldersList);
         }
       })
-      .catch()
+      .catch((e) => console.error(e))
       .finally(() => {
         setFolderName("");
         setShowModal(false);
@@ -49,12 +57,16 @@ const FolderContainer: FC = () => {
   const handleCreateFolder = () => {
     if (folderName) {
       invoke("plugin:folders|add_folder", {
-        folder: { id: null, name: folderName },
+        folder: { name: folderName },
       })
         .then(() => {
-          setRefreshList((e) => (e = !refreshList));
+          setRefreshList((oldVal) => (oldVal = !refreshList));
         })
-        .catch((e) => console.error(e));
+        .catch((e) => console.error(e))
+        .finally(() => {
+          setFolderName("");
+          setShowModal(false);
+        });
     }
   };
 
@@ -118,6 +130,7 @@ const FolderContainer: FC = () => {
             <li key={f.id} onClick={() => handleActive(f.id)}>
               <FolderItem
                 name={f.name}
+                index={f.id}
                 classStyle={`${
                   activeContext?.active.index === f.id &&
                   activeContext?.active.type === "folder"
