@@ -9,14 +9,17 @@ const FavoritContainer: FC = () => {
     {
       id: 1,
       name: "All Snippets",
+      icon: "GoPackage",
     },
     {
       id: 2,
       name: "Uncategorized",
+      icon: "GoBookmark",
     },
     {
       id: 3,
       name: "Other Categories",
+      icon: "GoArchive",
     },
   ];
 
@@ -50,6 +53,7 @@ const FavoritContainer: FC = () => {
             <li key={f.id} onClick={() => handleActive(f.id)}>
               <FavoritItem
                 name={f.name}
+                icon={f.icon}
                 classStyle={`${
                   activeContext?.active.index === f.id &&
                   activeContext?.active.type === "favorit"
