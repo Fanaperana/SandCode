@@ -6,6 +6,10 @@
     font-family: "Fira Code";
     src: url('../font/FiraCode-VariableFont_wght.ttf');
 }
+@font-face {
+    font-family: "IBM Plex Mono";
+    src: url('../font/IBMPlexMono-Regular.ttf');
+}
 
 @font-face {
     font-family: "Cascadia";
@@ -86,11 +90,11 @@ body,
 }
 
 .cm-content {
-    font-family: "Cascadia";
+    font-family: "IBM Plex Mono";
     font-size: 12px;
     /* height: 200px; */
     /** Comment this to enable font ligature */
-    /* font-variant-ligatures: none; */
+    font-variant-ligatures: none;
 }
 
 /* .cm-editor {
