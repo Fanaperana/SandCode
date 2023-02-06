@@ -62,12 +62,12 @@ const Snippet: FC = () => {
   return (
     <div className="w-[250px]">
       <div className="flex flex-col h-full">
-        <div className="shrink block border-b border-[#4d4d4d]">
+        <div className="shrink block border-b border-[#313842]">
           <SeachInput />
         </div>
-        <div className="grow mb-2" id="snippets">
+        <div className="grow bg-[#313842]" id="snippets">
           <div className="mx-2 py-2 h-full">
-            <div className="flex flex-col snippet-list divide-y divide-[rgb(63,63,63)] h-full">
+            <div className="flex flex-col snippet-list divide-y divide-[#262626] h-full">
               {snippetList.map((s) => (
                 <div key={s.id} onClick={() => handleActive(s.id)}>
                   <SnippetItem
@@ -82,8 +82,8 @@ const Snippet: FC = () => {
             </div>
           </div>
         </div>
-        <div className="p-1">
-          <button className="text-xs text-center transition-colors duration-75 text-slate-400 w-full border rounded-sm border-slate-700 p-1 hover:bg-slate-700/50 active:bg-slate-800/40 hover:text-slate-200 shadow-md">
+        <div className="px-2 border-t border-slate-800 bg-[#0c0c0c]">
+          <button className="text-xs text-center bg-[#151e21] transition-colors duration-75 text-slate-400 w-full border rounded-sm border-slate-700 p-1 hover:bg-slate-700/50 active:bg-slate-800/40 hover:text-slate-200 shadow-md my-1">
             New Snippet
           </button>
         </div>
