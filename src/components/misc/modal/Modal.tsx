@@ -61,7 +61,7 @@ const Modal: FC<ModalProps> = ({
                 ></path>
               </svg>
             </button>
-            <div className="w-[15rem] h-[10rem] flex flex-col">
+            <div className="w-[15rem] max-w-md flex flex-col">
               <Dialog.Title
                 as="div"
                 className="bg-[#283131] text-sm font-bold p-1 px-2 w-full border-b border-slate-700"
@@ -69,7 +69,9 @@ const Modal: FC<ModalProps> = ({
                 {title ? title : "Modal Title"}
               </Dialog.Title>
               <div className="p-3 grow">
-                <div className="flex flex-col items-center justify-center h-full">{children}</div>
+                <div className="flex flex-col items-center justify-center h-full">
+                  {children}
+                </div>
               </div>
               <div className="p-2 border-t border-slate-800 flex justify-end gap-2">
                 <button

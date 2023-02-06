@@ -18,7 +18,7 @@ const FolderItem: FC<Props> = ({ index, name, classStyle }) => {
           cursor: "pointer",
         }}
       >
-        <GoFileDirectory className="text-amber-500" size="18" />
+        <GoFileDirectory className="text-[#de9787]" size="18" />
         <span className="px-1 text-[13px] text-slate-200">{name}</span>
       </div>
     );

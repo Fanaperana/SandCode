@@ -56,7 +56,7 @@
       {
         "fullscreen": false,
         "height": 600,
-        "width": 800,
+        "width": 900,
         "resizable": true,
         "title": "SandCode",
         "minHeight": 200,

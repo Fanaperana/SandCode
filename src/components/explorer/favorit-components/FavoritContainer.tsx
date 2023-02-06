@@ -38,7 +38,7 @@ const FavoritContainer: FC = () => {
     >
       <summary className="cursor-pointer text-xs px-1 flex justify-between items-center hover:border-l-2 hover:border-orange-600/75 bg-[#313842] select-none">
         <div>Favorites</div>
-        <div className="pt-1">
+        <div className="flex gap-2 p-1 justify-center items-center">
           <button className="hover:text-slate-400 text-slate-500">
             <GoPlus
               className="rounded-full border border-slate-500 hover:border-slate-400"

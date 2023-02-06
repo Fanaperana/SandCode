@@ -77,7 +77,7 @@ const FolderContainer: FC = () => {
     >
       <summary className="cursor-pointer text-xs px-1 flex justify-between items-center hover:border-l-2 hover:border-orange-600/75 bg-[#313842] select-none">
         <div>Folders</div>
-        <div className="flex gap-2 p-1">
+        <div className="flex gap-2 p-1 justify-center items-center">
           <button
             className="hover:text-slate-400 text-slate-500"
             onClick={() => setRefreshList((e) => (e = !refreshList))}
