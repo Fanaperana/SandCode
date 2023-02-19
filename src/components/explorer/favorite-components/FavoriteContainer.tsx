@@ -1,5 +1,5 @@
 import { FC, useContext } from "react";
-import FavoritItem from "./FavoritItem";
+import FavoritItem from "./FavoriteItem";
 import { ActiveContext } from "../contexts/ActiveContext";
 import { GoPlus } from "react-icons/go";
 import { ActiveType } from "../types/Active";
@@ -23,12 +23,12 @@ const FavoritContainer: FC = () => {
     },
   ];
 
-  const FAVORIT = "favorit";
+  const FAVORITE = "favorite";
 
   const activeContext = useContext(ActiveContext);
 
   const handleActive = (id: number) => {
-    activeContext?.setActive({ index: id, type: FAVORIT });
+    activeContext?.setActive({ index: id, type: FAVORITE });
   };
 
   return (
@@ -56,7 +56,7 @@ const FavoritContainer: FC = () => {
                 icon={f.icon}
                 classStyle={`${
                   activeContext?.active.index === f.id &&
-                  activeContext?.active.type === "favorit"
+                  activeContext?.active.type === "favorite"
                     ? "active"
                     : ""
                 }`}
