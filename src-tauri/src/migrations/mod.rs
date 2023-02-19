@@ -30,6 +30,7 @@ fn create_tables(conn: &Connection) -> rusqlite::Result<()> {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             folder_id INTEGER NOT NULL,
             name TEXT NOT NULL, 
+            timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (folder_id) REFERENCES folders(id)
         );
         ",

@@ -2,6 +2,11 @@ import { useState, useEffect, FC } from "react";
 import SeachInput from "./SeachInput";
 import SnippetItem from "./SnippetItem";
 import "./SnippetContainer.css";
+import { invoke } from "@tauri-apps/api";
+
+const getSnippetByFolderId = () => {
+  
+};
 
 const Snippet: FC = () => {
   const [isShown, setIsShown] = useState(true);

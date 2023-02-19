@@ -20,6 +20,7 @@ fn main() {
         .plugin(migrations::init())
         .plugin(models::code::init())
         .plugin(models::folder::init())
+        .plugin(models::snippet::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

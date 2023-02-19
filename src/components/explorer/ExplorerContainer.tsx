@@ -1,20 +1,26 @@
-import { FC, useState } from "react";
+import { FC, useState, useContext, useEffect } from "react";
 import ExplorerToolbar from "./misc/ExplorerToolbar";
-import FavoritContainer from "./favorit-components/FavoritContainer";
+import FavoriteContainer from "./favorite-components/FavoriteContainer";
 import FolderContainer from "./folder-components/FolderContainer";
 import TagContainer from "./tag-components/TagContainer";
 import { ActiveContext } from "./contexts/ActiveContext";
 import { ActiveType } from "./types/Active";
 import "./utils/styles.css";
+import { MainContext } from "../context/MainContext";
 
 const ExplorerContainer: FC = () => {
   // Initial state use to the side explorer
   const toActive: ActiveType = {
     index: 1,
-    type: "favorit",
+    type: "favorite",
   };
 
+  const mainContext = useContext(MainContext);
   const [active, setActive] = useState<ActiveType>(toActive);
+
+  useEffect(() => {
+    mainContext?.setExplorer(active as ActiveType);
+  }, [active]);
 
   return (
     <div
@@ -28,7 +34,7 @@ const ExplorerContainer: FC = () => {
         }}
       >
         <ExplorerToolbar />
-        <FavoritContainer />
+        <FavoriteContainer />
         <FolderContainer />
         <TagContainer />
       </ActiveContext.Provider>
