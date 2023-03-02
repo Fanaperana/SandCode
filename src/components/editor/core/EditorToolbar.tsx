@@ -15,15 +15,15 @@ import {
   //   langs,
   LanguageName,
 } from "@uiw/codemirror-extensions-langs";
-import { LanguageContext } from "../context/EditorLanguage";
-import { EditorIndexContext, EditorIndexType } from "../context/EditorIndex";
+import { LanguageContext } from "../context";
+import { EditorIndexContext, EditorIndexType } from "../context";
 import * as langext from "../lib/languages";
 
 interface EditorToolbarType {
   index: number;
 }
 
-const EditorToolbar: FC<EditorToolbarType> = ({ index }) => {
+export const EditorToolbar: FC<EditorToolbarType> = ({ index }) => {
   const langContext = useContext(LanguageContext);
   const IndexContext = useContext(EditorIndexContext);
   const [fileName, setFileName] = useState("");
@@ -46,11 +46,15 @@ const EditorToolbar: FC<EditorToolbarType> = ({ index }) => {
     [fileName]
   );
 
-  const handleDiscard = useCallback(() => {
+  /**
+   * Delete current editor based on index Date.now()
+   */
+  const handleDiscard = () => {
+    console.log(IndexContext?.editorIndex);
     IndexContext?.setEditorIndex(
       IndexContext?.editorIndex.filter((d) => d.index !== index)
     );
-  }, []);
+  };
 
   const handleFileName = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setFileName(event.target.value as string);
@@ -110,5 +114,3 @@ const EditorToolbar: FC<EditorToolbarType> = ({ index }) => {
     </div>
   );
 };
-
-export default EditorToolbar;

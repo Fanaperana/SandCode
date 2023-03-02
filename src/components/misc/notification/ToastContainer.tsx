@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, createContext } from "react";
 import { listen } from "@tauri-apps/api/event";
 import { ToastType, ToastContextType } from "./ToastMain";
-import Toast from "./Toast";
+import { Toast } from "./Toast";
 
 export const ToastContext = createContext<ToastContextType | null>(null);
 

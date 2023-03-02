@@ -2,7 +2,7 @@ import { FC } from "react";
 import { GoPlus, GoSearch } from "react-icons/go";
 import { Notify, MsgType } from "../misc/notification/ToastMain";
 
-const SeachInput: FC = () => {
+export const SeachInput: FC = () => {
   const notify = () => {
     Notify(MsgType.NORMAL, "This is a test");
   };
@@ -25,5 +25,3 @@ const SeachInput: FC = () => {
     </>
   );
 };
-
-export default SeachInput;

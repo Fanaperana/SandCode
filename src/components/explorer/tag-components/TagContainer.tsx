@@ -8,11 +8,12 @@ import {
 } from "react";
 import { GoPlus, GoX, GoTag } from "react-icons/go";
 import { ActiveContext } from "../contexts/ActiveContext";
-import TagItem from "./TagItem";
-import Modal from "../../misc/modal/Modal";
 import { invoke } from "@tauri-apps/api/tauri";
+import { TagItem } from "./";
+import { Modal } from "../../misc/";
+import { ExplorerType } from "../types";
 
-const TagContainer: FC = () => {
+export const TagContainer: FC = () => {
   const tags = [
     {
       id: 1,
@@ -39,7 +40,7 @@ const TagContainer: FC = () => {
   const activeContext = useContext(ActiveContext);
 
   const handleActive = (id: number) => {
-    activeContext?.setActive({ index: id, type: "tag" });
+    activeContext?.setActive({ index: id, type: ExplorerType.TAG });
   };
 
   const handleCreateTag = () => {
@@ -172,4 +173,3 @@ const TagContainer: FC = () => {
     </details>
   );
 };
-export default TagContainer;

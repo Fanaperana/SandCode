@@ -8,14 +8,13 @@ import {
 import { LanguageContext } from "../context/EditorLanguage";
 import { oneDark } from "@codemirror/theme-one-dark";
 import CodeMirror from "@uiw/react-codemirror";
-import EditorToolbar from "./EditorToolbar";
-import EditorFooter from "./EditorFooter";
+import { EditorToolbar, EditorFooter } from "./";
 
 interface EditorType {
   index: number;
 }
 
-const Editor: FC<EditorType> = ({ index }) => {
+export const Editor: FC<EditorType> = ({ index }) => {
   // useEffect(() => {
   //     console.log(index)
   // }, [])
@@ -59,4 +58,3 @@ const Editor: FC<EditorType> = ({ index }) => {
     </>
   );
 };
-export default Editor;

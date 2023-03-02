@@ -18,7 +18,7 @@ interface ToastProps {
   onDelete: () => void;
 }
 
-const Toast: FC<ToastProps> = ({
+export const Toast: FC<ToastProps> = ({
   message,
   msg_type,
   duration = 5000,
@@ -106,5 +106,3 @@ const Toast: FC<ToastProps> = ({
     </>
   );
 };
-
-export default Toast;

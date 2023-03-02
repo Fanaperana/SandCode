@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-const EditorInputTag: FC = () => {
+export const EditorInputTag: FC = () => {
   return (
     <>
       <div className="flex gap-2 p-2">
@@ -18,5 +18,3 @@ const EditorInputTag: FC = () => {
     </>
   );
 };
-
-export default EditorInputTag;

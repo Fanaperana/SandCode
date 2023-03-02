@@ -1,9 +1,8 @@
+import { Editor, EditorHeader } from "./";
 import { useState, useEffect, FC } from "react";
-import Editor from "./core/Editor";
-import EditorHeader from "./EditorHeader";
-import { EditorIndexContext, EditorIndexType } from "./context/EditorIndex";
+import { EditorIndexContext, EditorIndexType } from "./context";
 
-const EditorRender: FC = () => {
+export const EditorRender: FC = () => {
   let initIndex: EditorIndexType[] = [
     {
       index: Date.now(),
@@ -12,6 +11,9 @@ const EditorRender: FC = () => {
 
   const [editorIndex, setEditorIndex] = useState(initIndex);
 
+  useEffect(() => {
+    console.log(editorIndex);
+  }, [editorIndex]);
   return (
     <>
       <EditorIndexContext.Provider value={{ editorIndex, setEditorIndex }}>
@@ -42,4 +44,3 @@ const EditorRender: FC = () => {
     </>
   );
 };
-export default EditorRender;

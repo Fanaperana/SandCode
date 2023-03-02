@@ -7,18 +7,19 @@ import {
   ChangeEvent,
 } from "react";
 import { GoPlus, GoX, GoSync } from "react-icons/go";
-import FolderItem from "./FolderItem";
+import { FolderItem } from "./FolderItem";
 import { ActiveContext } from "../contexts/ActiveContext";
-import Modal from "../../misc/modal/Modal";
+import { Modal } from "../../misc/";
 import { invoke } from "@tauri-apps/api/tauri";
 import { listen } from "@tauri-apps/api/event";
+import { ExplorerType } from "../types/Active";
 
 interface Folder {
   id: number;
   name: string;
 }
 
-const FolderContainer: FC = () => {
+export const FolderContainer: FC = () => {
   const [folders, setFolders] = useState([{ id: 0, name: "Empty" } as Folder]);
   const [refreshList, setRefreshList] = useState(false);
   const [folderName, setFolderName] = useState("");
@@ -50,7 +51,7 @@ const FolderContainer: FC = () => {
 
   const handleActive = (id: number | undefined) => {
     if (id) {
-      activeContext?.setActive({ index: id, type: "folder" });
+      activeContext?.setActive({ index: id, type: ExplorerType.FOLDER });
     }
   };
 
@@ -145,5 +146,3 @@ const FolderContainer: FC = () => {
     </details>
   );
 };
-
-export default FolderContainer;

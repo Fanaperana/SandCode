@@ -12,7 +12,7 @@ interface Command {
   action: () => void;
 }
 
-const CmdPalette: FC = () => {
+export const CmdPalette: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [commands, setCommands] = useState<Command[]>([]);
 
@@ -79,5 +79,3 @@ const CmdPalette: FC = () => {
     </Transition>
   );
 };
-
-export default CmdPalette;
