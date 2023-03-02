@@ -123,13 +123,24 @@ pub fn add_folder<R: Runtime>(
     if !folder_exists {
         conn.execute("INSERT INTO folders (name) VALUES (?1)", params![name])
             .unwrap();
+
+        _window
+            .emit(
+                "notify",
+                json!(Payload {
+                    msg_type: "success".to_string(),
+                    message: "Folder added successfully.".to_string()
+                }),
+            )
+            .unwrap();
+
         Ok(json!(folder))
     } else {
         let error = Payload {
-            msg_type: "Error".to_string(),
+            msg_type: "error".to_string(),
             message: "There is a duplications".to_string(),
         };
-        _window.emit("Toast", json!(error)).unwrap();
+        _window.emit("notify", json!(error)).unwrap();
         Err(json!(error))
     }
 }

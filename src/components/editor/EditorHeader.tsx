@@ -1,5 +1,5 @@
 import { FC } from "react";
-import EditorInputTag from "./EditorInputTag";
+import { EditorInputTag } from "./EditorInputTag";
 import {
   GoListUnordered,
   GoCloudDownload,
@@ -7,7 +7,7 @@ import {
   GoRepo,
 } from "react-icons/go";
 
-const EditorHeader: FC = () => {
+export const EditorHeader: FC = () => {
   return (
     <div className="divide-y divide-slate-700/70 w-full">
       <div className="flex flex-row p-3 w-full items-center">
@@ -44,5 +44,3 @@ const EditorHeader: FC = () => {
     </div>
   );
 };
-
-export default EditorHeader;

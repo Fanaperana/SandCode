@@ -7,7 +7,7 @@ interface FavProps {
   icon: string;
 }
 
-const FavoritItem: FC<FavProps> = ({ name, icon, classStyle }) => {
+export const FavoriteItem: FC<FavProps> = ({ name, icon, classStyle }) => {
   let ico: JSX.Element | null = null;
 
   if (icon === "GoPackage") {
@@ -33,5 +33,3 @@ const FavoritItem: FC<FavProps> = ({ name, icon, classStyle }) => {
     </div>
   );
 };
-
-export default FavoritItem;

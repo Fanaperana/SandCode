@@ -1,10 +1,11 @@
 import { FC, useContext } from "react";
-import FavoritItem from "./FavoriteItem";
+import { FavoriteItem } from "./FavoriteItem";
 import { ActiveContext } from "../contexts/ActiveContext";
 import { GoPlus } from "react-icons/go";
-import { ActiveType } from "../types/Active";
+import { ActiveType } from "../types/";
+import { ExplorerType } from "../types/";
 
-const FavoritContainer: FC = () => {
+export const FavoriteContainer: FC = () => {
   const favorites = [
     {
       id: 1,
@@ -23,12 +24,10 @@ const FavoritContainer: FC = () => {
     },
   ];
 
-  const FAVORITE = "favorite";
-
   const activeContext = useContext(ActiveContext);
 
   const handleActive = (id: number) => {
-    activeContext?.setActive({ index: id, type: FAVORITE });
+    activeContext?.setActive({ index: id, type: ExplorerType.FAVORITE });
   };
 
   return (
@@ -51,7 +50,7 @@ const FavoritContainer: FC = () => {
         <ul className="list-none list text-slate-200 text-sm h-5 max-h-full">
           {favorites.map((f) => (
             <li key={f.id} onClick={() => handleActive(f.id)}>
-              <FavoritItem
+              <FavoriteItem
                 name={f.name}
                 icon={f.icon}
                 classStyle={`${
@@ -68,4 +67,3 @@ const FavoritContainer: FC = () => {
     </details>
   );
 };
-export default FavoritContainer;

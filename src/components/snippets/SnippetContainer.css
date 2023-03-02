@@ -8,19 +8,24 @@
 #snippets .snippet-list div.snippet-item {
     border-radius: 4px;
     margin: 1px;
+    box-shadow: 1px 1px 3px #1e1d1d;
+    border: 1px solid #292d2e;
+    /* background-color: #242728; */
+    background-color: #222729;
 }
 
 #snippets .snippet-list div.snippet-item:hover {
-    background: #4b505a;
+    background: #272b32;
     transition-duration: .5s;
 }
 
-#snippets .active {
-    background-color: #345060;
+#snippets .snippet-list div.snippet-item.active {
+    /* background-color: #293b46; */
+    background-color: #02344b;
     position: relative;
 }
 
-#snippets .active:hover {
+#snippets .snippet-list div.snippet-item.active.active:hover {
     background-color: #26363f;
     transition-duration: .5s;
 }

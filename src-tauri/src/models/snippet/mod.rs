@@ -29,6 +29,16 @@ pub struct Snippet {
 }
 
 #[derive(Serialize, Deserialize)]
+pub struct SnippetTag {
+    id: Option<u64>,
+    folder_id: u64,
+    name: String,
+    timestamp: Option<String>,
+    snippet_id: Option<u64>,
+    tag_id: Option<u64>,
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct Payload {
     msg_type: String,
     message: String,
@@ -110,6 +120,48 @@ pub fn fetch_snippet_by_folder(folder_id: u64) -> Result<Value, Value> {
 }
 
 #[tauri::command]
+pub fn fetch_snippet_by_tag(tag_id: u64) -> Result<Value, Value> {
+    let conn = Connection::open("data.db").unwrap();
+    let mut stmt = conn
+        .prepare("SELECT s.id, s.folder_id, s.name, s.timestamp, st.snippet_id, st.tag_id FROM snippets s INNER JOIN snippets_have_tags st ON s.id = st.snippet_id WHERE st.tag_id = ?1")
+        .unwrap();
+
+    let snippet_iter = stmt
+        .query_map([tag_id], |row| {
+            Ok(SnippetTag {
+                id: row.get(0)?,
+                folder_id: row.get(1)?,
+                name: row.get(2)?,
+                timestamp: row.get(3)?,
+                snippet_id: row.get(4)?,
+                tag_id: row.get(5)?,
+            })
+        })
+        .unwrap();
+
+    let mut snippets_have_tags = Vec::new();
+
+    for item in snippet_iter {
+        snippets_have_tags.push(item.unwrap());
+    }
+
+    if snippets_have_tags.len() == 0 {
+        return Ok(json!([SnippetTag {
+            id: Some(0),
+            folder_id: 0,
+            name: "Empty".to_string(),
+            timestamp: None,
+            snippet_id: None,
+            tag_id: None
+        }]));
+    }
+
+    let json_value = json!(snippets_have_tags);
+
+    Ok(json_value)
+}
+
+#[tauri::command]
 pub fn fetch_snippet(snippet_id: u64) -> Result<Value, Value> {
     let conn = Connection::open("data.db").unwrap();
     let mut stmt = conn
@@ -167,11 +219,12 @@ pub fn add_snippet<R: Runtime>(
 }
 
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
-    Builder::new("folders")
+    Builder::new("snippets")
         .invoke_handler(tauri::generate_handler![
             fetch_all,
             fetch_snippet,
             fetch_snippet_by_folder,
+            fetch_snippet_by_tag,
             add_snippet
         ])
         .build()

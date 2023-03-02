@@ -10,7 +10,7 @@ interface ModalProps {
   btnFn?: () => void;
 }
 
-const Modal: FC<ModalProps> = ({
+export const Modal: FC<ModalProps> = ({
   title,
   isOpen,
   onClose,
@@ -94,5 +94,3 @@ const Modal: FC<ModalProps> = ({
     </Transition>
   );
 };
-
-export default Modal;

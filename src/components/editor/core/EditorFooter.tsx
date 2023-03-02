@@ -1,7 +1,7 @@
 import { FC, ChangeEvent, useContext, useState, useEffect } from "react";
 import { langNames, LanguageName } from "@uiw/codemirror-extensions-langs";
-import { LanguageContext } from "../context/EditorLanguage";
-const EditorFooter: FC = () => {
+import { LanguageContext } from "../context";
+export const EditorFooter: FC = () => {
   const LangContext = useContext(LanguageContext);
   const [selectedLang, setSelectedLang] = useState("plain/text");
 
@@ -45,5 +45,3 @@ const EditorFooter: FC = () => {
     </>
   );
 };
-
-export default EditorFooter;

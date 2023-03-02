@@ -7,7 +7,7 @@ interface Props {
   classStyle: string;
 }
 
-const FolderItem: FC<Props> = ({ index, name, classStyle }) => {
+export const FolderItem: FC<Props> = ({ index, name, classStyle }) => {
   let c: JSX.Element | null = null;
 
   if (index !== 0) {
@@ -37,6 +37,3 @@ const FolderItem: FC<Props> = ({ index, name, classStyle }) => {
   }
   return c;
 };
-// return c;
-
-export default FolderItem;

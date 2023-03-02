@@ -1,15 +1,21 @@
-import { useState, useEffect, FC } from "react";
-import SeachInput from "./SeachInput";
-import SnippetItem from "./SnippetItem";
-import "./SnippetContainer.css";
 import { invoke } from "@tauri-apps/api";
+import { useState, useEffect, FC, useContext } from "react";
+import { SnippetItem, SeachInput } from "./";
+import { ExplorerType } from "../explorer/types";
+import { MsgType, Notify } from "../misc/notification";
+import { MainContext } from "./../context";
+import "./SnippetContainer.css";
 
-const getSnippetByFolderId = () => {
-  
-};
+interface SnippetProps {
+  id: number;
+  title: string;
+  file: string;
+  time: string;
+}
 
-const Snippet: FC = () => {
+export const SnippetContainer: FC = () => {
   const [isShown, setIsShown] = useState(true);
+  const mainContext = useContext(MainContext);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -21,13 +27,18 @@ const Snippet: FC = () => {
         setIsShown(!isShown);
       }
     };
+
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isShown]);
 
-  const snippetList = [
+  useEffect(() => {
+    console.log(mainContext?.explorer);
+  }, [mainContext?.explorer]);
+
+  const sList: SnippetProps[] = [
     {
       id: 1,
       title: "Vue Application Modal Creation",
@@ -42,19 +53,45 @@ const Snippet: FC = () => {
     },
     {
       id: 3,
-      title: "SQL Reports",
-      file: "MySQL",
-      time: "01/10/23",
+      title: "Tauri APP",
+      file: "Rust",
+      time: "12/09/22",
     },
     {
       id: 4,
-      title: "My ReactApp",
-      file: "Typescript",
-      time: "01/01/22",
+      title: "Tauri APP",
+      file: "Rust",
+      time: "12/09/22",
     },
   ];
 
+  const [snippetList, setSnippetList] = useState<SnippetProps[]>(sList);
+
   const [activeIndex, setActiveIndex] = useState(1);
+
+  useEffect(() => {
+    // console.log(mainContext?.explorer);
+    if (mainContext?.explorer) {
+      invoke("plugin:snippets|fetch_all")
+        .then((res) => {
+          // console.log(typeof res);
+          if (typeof res === "object") {
+            const data = res;
+
+            // res.map(data => {
+
+            // })
+          }
+        })
+        .catch((err) => {
+          Notify(MsgType.ERROR, err);
+        });
+      if (mainContext?.explorer.type === ExplorerType.FAVORITE) {
+      } else if (mainContext?.explorer.type === ExplorerType.FOLDER) {
+      } else if (mainContext?.explorer.type === ExplorerType.TAG) {
+      }
+    }
+  }, [mainContext?.explorer]);
 
   const handleActive = (id: number) => {
     setActiveIndex(id);
@@ -70,20 +107,26 @@ const Snippet: FC = () => {
         <div className="shrink block border-b border-[#313842]">
           <SeachInput />
         </div>
-        <div className="grow bg-[#313842]" id="snippets">
+        <div className="grow bg-[#1f2228]" id="snippets">
           <div className="mx-2 py-2 h-full">
-            <div className="flex flex-col snippet-list divide-y divide-[#262626] h-full">
-              {snippetList.map((s) => (
-                <div key={s.id} onClick={() => handleActive(s.id)}>
-                  <SnippetItem
-                    title={s.title}
-                    fileName={s.file}
-                    time={s.time}
-                    activeIndex={activeIndex}
-                    className={s.id === activeIndex ? "active" : ""}
-                  />
+            <div className="flex flex-col snippet-list gap-1 divide-[#262626] h-full">
+              {snippetList.length ? (
+                snippetList.map((s) => (
+                  <div key={s.id} onClick={() => handleActive(s.id)}>
+                    <SnippetItem
+                      title={s.title}
+                      fileName={s.file}
+                      time={s.time}
+                      activeIndex={activeIndex}
+                      className={s.id === activeIndex ? "active" : ""}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="text-center flex flex-1 items-center justify-center font-thin italic text-slate-400 rounded bg-[#2f3841] border border-slate-700 shadow-sm shadow-slate-900">
+                  <div className="">Empty folder</div>
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
@@ -96,5 +139,3 @@ const Snippet: FC = () => {
     </div>
   );
 };
-
-export default Snippet;

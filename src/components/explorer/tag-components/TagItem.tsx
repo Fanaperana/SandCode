@@ -7,7 +7,7 @@ interface TagProps {
   classStyle?: string;
 }
 
-const TagItem: FC<TagProps> = ({ name, color, classStyle }) => {
+export const TagItem: FC<TagProps> = ({ name, color, classStyle }) => {
   return (
     <div className={`flex gap-1 m-1 items-center ${classStyle}`}>
       <GoTag color={color} size="15" />
@@ -15,4 +15,3 @@ const TagItem: FC<TagProps> = ({ name, color, classStyle }) => {
     </div>
   );
 };
-export default TagItem;

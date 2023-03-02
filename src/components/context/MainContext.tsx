@@ -11,7 +11,7 @@ export interface SnippetDataType {
 }
 
 // export interface EditorDataType {
-//   // snippet: SnippetDataType;
+//   snippet: SnippetDataType;
 //   index: number;
 // }
 
