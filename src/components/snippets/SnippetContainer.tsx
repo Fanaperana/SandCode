@@ -13,6 +13,13 @@ interface SnippetProps {
   time: string;
 }
 
+interface SnippetResProps {
+  id: number;
+  folder_id: number;
+  name: string;
+  timestamp: string;
+}
+
 export const SnippetContainer: FC = () => {
   const [isShown, setIsShown] = useState(true);
   const mainContext = useContext(MainContext);
@@ -22,9 +29,10 @@ export const SnippetContainer: FC = () => {
       //   event.preventDefault();
 
       // console.log(event.code);
-      if (event.ctrlKey && event.code === "KeyB") {
+      if (event.ctrlKey && !event.shiftKey && event.code === "KeyB") {
         event.preventDefault();
         setIsShown(!isShown);
+        event.stopPropagation();
       }
     };
 
@@ -34,60 +42,68 @@ export const SnippetContainer: FC = () => {
     };
   }, [isShown]);
 
-  useEffect(() => {
-    console.log(mainContext?.explorer);
-  }, [mainContext?.explorer]);
+  const [snippetList, setSnippetList] = useState<SnippetResProps[]>([]);
 
-  const sList: SnippetProps[] = [
-    {
-      id: 1,
-      title: "Vue Application Modal Creation",
-      file: "Uncategorized",
-      time: "12:00 PM",
-    },
-    {
-      id: 2,
-      title: "Tauri APP",
-      file: "Rust",
-      time: "12/09/22",
-    },
-    {
-      id: 3,
-      title: "Tauri APP",
-      file: "Rust",
-      time: "12/09/22",
-    },
-    {
-      id: 4,
-      title: "Tauri APP",
-      file: "Rust",
-      time: "12/09/22",
-    },
-  ];
-
-  const [snippetList, setSnippetList] = useState<SnippetProps[]>(sList);
-
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(
+    mainContext?.snippet?.snippet_id as number
+  );
 
   useEffect(() => {
-    // console.log(mainContext?.explorer);
     if (mainContext?.explorer) {
-      invoke("plugin:snippets|fetch_all")
-        .then((res) => {
-          // console.log(typeof res);
-          if (typeof res === "object") {
-            const data = res;
-
-            // res.map(data => {
-
-            // })
-          }
-        })
-        .catch((err) => {
-          Notify(MsgType.ERROR, err);
-        });
       if (mainContext?.explorer.type === ExplorerType.FAVORITE) {
+        switch (mainContext?.explorer.index) {
+          // Fetch all snippets
+          case 1: {
+            invoke("plugin:snippets|fetch_all")
+              .then((res) => {
+                if (typeof res === "object") {
+                  const data: Array<SnippetResProps> =
+                    res as Array<SnippetResProps>;
+                  setSnippetList(data);
+                }
+              })
+              .catch((err) => {
+                Notify(MsgType.ERROR, err);
+              });
+            break;
+          }
+          case 2: {
+            // Uncategorized
+            setSnippetList([]);
+            break;
+          }
+          case 3: {
+            setSnippetList([]);
+            // Other Categories
+            break;
+          }
+        }
       } else if (mainContext?.explorer.type === ExplorerType.FOLDER) {
+        invoke("plugin:snippets|fetch_snippet_by_folder", {
+          folderId: mainContext?.explorer.index,
+        })
+          .then((res) => {
+            if (typeof res == "object") {
+              const data: Array<SnippetResProps> =
+                res as Array<SnippetResProps>;
+              if (data.length === 0) {
+                setSnippetList([]);
+              } else {
+                if (data.length === 1) {
+                  if (data[0].folder_id === 0) {
+                    setSnippetList([]);
+                  } else {
+                    setSnippetList(data);
+                  }
+                } else {
+                  setSnippetList(data);
+                }
+              }
+            }
+          })
+          .catch((err) => {
+            Notify(MsgType.ERROR, err);
+          });
       } else if (mainContext?.explorer.type === ExplorerType.TAG) {
       }
     }
@@ -95,8 +111,14 @@ export const SnippetContainer: FC = () => {
 
   const handleActive = (id: number) => {
     setActiveIndex(id);
-    console.log(id);
+    mainContext?.setSnippet({ snippet_id: id });
+    // console.log(id);
+    // console.log(mainContext?.snippet);
   };
+
+  useEffect(() => {
+    console.log(mainContext?.snippet);
+  }, [mainContext?.snippet]);
 
   if (!isShown) {
     return null;
@@ -114,16 +136,16 @@ export const SnippetContainer: FC = () => {
                 snippetList.map((s) => (
                   <div key={s.id} onClick={() => handleActive(s.id)}>
                     <SnippetItem
-                      title={s.title}
-                      fileName={s.file}
-                      time={s.time}
+                      title={s.name}
+                      fileName={mainContext?.explorer?.type || ""}
+                      time={s.timestamp.split(" ")[0]}
                       activeIndex={activeIndex}
                       className={s.id === activeIndex ? "active" : ""}
                     />
                   </div>
                 ))
               ) : (
-                <div className="text-center flex flex-1 items-center justify-center font-thin italic text-slate-400 rounded bg-[#2f3841] border border-slate-700 shadow-sm shadow-slate-900">
+                <div className="text-center flex flex-1 items-center justify-center font-thin italic text-slate-400 rounded bg-[#2f3841] border border-slate-700 shadow-sm shadow-slate-900 opacity-50">
                   <div className="">Empty folder</div>
                 </div>
               )}

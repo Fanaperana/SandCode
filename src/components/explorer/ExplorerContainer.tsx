@@ -13,6 +13,26 @@ export const ExplorerContainer: FC = () => {
     type: ExplorerType.FAVORITE,
   };
 
+  const [isShown, setIsShown] = useState(true);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      //   event.preventDefault();
+
+      // console.log(event.code);
+      if (event.ctrlKey && event.shiftKey && event.code === "KeyB") {
+        event.preventDefault();
+        setIsShown(!isShown);
+        event.stopPropagation();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isShown]);
+
   const mainContext = useContext(MainContext);
   const [active, setActive] = useState<ActiveType>(toActive);
 
@@ -20,7 +40,7 @@ export const ExplorerContainer: FC = () => {
     mainContext?.setExplorer(active as ActiveType);
   }, [active]);
 
-  return (
+  return isShown ? (
     <div
       className="flex flex-col min-w-[200px] max-w-[200px] text-slate-400 text-sm bg-[#151515] h-full"
       id="explorer"
@@ -37,5 +57,5 @@ export const ExplorerContainer: FC = () => {
         <TagContainer />
       </ActiveContext.Provider>
     </div>
-  );
+  ) : null;
 };

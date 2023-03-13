@@ -1,7 +1,7 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
 
 export interface EditorIndexType {
-    index: number;
+    index: string;
 }
 
 export interface EditorIndexContextProps {

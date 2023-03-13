@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import { useState, FC, MouseEvent } from "react";
 import { GoFileDirectory } from "react-icons/go";
 
 interface Props {
@@ -10,6 +10,15 @@ interface Props {
 export const FolderItem: FC<Props> = ({ index, name, classStyle }) => {
   let c: JSX.Element | null = null;
 
+  /**
+   *
+   * @param event To be called with onContextMenu
+   */
+  const handleRightClick = (event: MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    console.log(event);
+  };
+
   if (index !== 0) {
     c = (
       <div
@@ -17,6 +26,7 @@ export const FolderItem: FC<Props> = ({ index, name, classStyle }) => {
         style={{
           cursor: "pointer",
         }}
+        onContextMenu={handleRightClick}
       >
         <GoFileDirectory className="text-[#de9787]" size="18" />
         <span className="px-1 text-[13px] text-slate-200">{name}</span>
