@@ -5,7 +5,7 @@ import { Toast } from "./Toast";
 
 export const ToastContext = createContext<ToastContextType | null>(null);
 
-const ToastContainer: FC = ({}) => {
+export const ToastContainer: FC = ({}) => {
   const [stackMessages, setStackMessages] = useState<ToastType[]>([]);
 
   const unlisten = async () => {
@@ -53,5 +53,3 @@ const ToastContainer: FC = ({}) => {
     </>
   );
 };
-
-export default ToastContainer;

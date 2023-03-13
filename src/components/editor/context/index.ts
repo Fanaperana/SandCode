@@ -1,2 +1,2 @@
 export * from "./EditorIndex";
-export * from "./EditorLanguage";
+export * from "./EditorContext";

@@ -7,10 +7,10 @@ import { SnippetContainer } from "./components/snippets";
 import { ExplorerContainer } from "./components/explorer";
 import { Modal } from "./components/misc/modal";
 import { CmdPalette } from "./components/misc";
-import { ActiveContext } from "./components/explorer/contexts/ActiveContext";
-import { ActiveType, ExplorerType } from "./components/explorer/types/Active";
+import { ActiveContext } from "./components/explorer/contexts";
+import { ActiveType, ExplorerType } from "./components/explorer/types";
 import { MainContext, MainContainer } from "./components/context/MainContext";
-import ToastContainer from "./components/misc/notification/ToastContainer";
+import { ToastContainer } from "./components/misc/notification";
 
 function App() {
   /**

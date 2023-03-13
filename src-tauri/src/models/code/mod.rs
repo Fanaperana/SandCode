@@ -17,13 +17,14 @@ use tauri::{
 
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json::{json, Value};
 
 #[derive(Serialize, Deserialize)]
 pub struct Code {
     id: Option<u64>,
     name: String,
     content: Option<String>,
+    lang_type: Option<String>,
     snippet_id: u64,
 }
 
@@ -44,7 +45,8 @@ pub fn fetch_codes(snipt_id: u64) -> Result<Value, Value> {
                 id: row.get(0)?,
                 name: row.get(1)?,
                 content: row.get(2)?,
-                snippet_id: row.get(3)?,
+                lang_type: row.get(3)?,
+                snippet_id: row.get(4)?,
             })
         })
         .unwrap();
@@ -55,7 +57,7 @@ pub fn fetch_codes(snipt_id: u64) -> Result<Value, Value> {
         codes.push(snippet.unwrap());
     }
 
-    let all = serde_json::to_string(&codes).unwrap();
+    let all = json!(codes);
 
     Ok(all.into())
 }
@@ -63,7 +65,9 @@ pub fn fetch_codes(snipt_id: u64) -> Result<Value, Value> {
 #[tauri::command]
 pub fn fetch_all() -> Result<Value, Value> {
     let conn = Connection::open("data.db").unwrap();
-    let mut stmt = conn.prepare("SELECT * FROM codes").unwrap();
+    let mut stmt = conn
+        .prepare("SELECT id, name, content, lang_type, snippet_id FROM codes")
+        .unwrap();
 
     let code_iter = stmt
         .query_map(rusqlite::params![], |row| {
@@ -71,7 +75,8 @@ pub fn fetch_all() -> Result<Value, Value> {
                 id: row.get(0)?,
                 name: row.get(1)?,
                 content: row.get(2)?,
-                snippet_id: row.get(3)?,
+                lang_type: row.get(3)?,
+                snippet_id: row.get(4)?,
             })
         })
         .unwrap();
@@ -82,7 +87,7 @@ pub fn fetch_all() -> Result<Value, Value> {
         codes.push(snippet.unwrap());
     }
 
-    let all = serde_json::to_string(&codes).unwrap();
+    let all = json!(codes);
 
     Ok(all.into())
 }
@@ -98,8 +103,8 @@ pub fn add_code(code: Code) -> Result<Value, Value> {
     };
 
     conn.execute(
-        "INSERT INTO codes (name, content, snippet_id) VALUES (?1, ?2, ?3)",
-        (name, &code.content, &code.snippet_id),
+        "INSERT INTO codes (name, content, lang_type, snippet_id) VALUES (?1, ?2, ?3, ?4)",
+        (name, &code.content, &code.lang_type, &code.snippet_id),
     )
     .unwrap();
 

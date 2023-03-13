@@ -5,30 +5,35 @@ import {
   langs,
   LanguageName,
 } from "@uiw/codemirror-extensions-langs";
-import { LanguageContext } from "../context/EditorLanguage";
+import { EditorContext } from "../context/EditorContext";
 import { oneDark } from "@codemirror/theme-one-dark";
 import CodeMirror from "@uiw/react-codemirror";
 import { EditorToolbar, EditorFooter } from "./";
+import { uuid } from "../lib";
 
-interface EditorType {
-  index: number;
+interface EditorTypeProps {
+  index: string;
+  title?: string;
+  value?: string;
+  isUpdate?: boolean;
+  isEditable?: boolean;
+  lang?: LanguageName | null;
 }
 
-export const Editor: FC<EditorType> = ({ index }) => {
-  // useEffect(() => {
-  //     console.log(index)
-  // }, [])
-
-  //   const arr = `[${langNames.map((e) => {
-  //     return '\n\t{\n\t\tname: "' + e + '",\n\t\textension: []\n\t}';
-  //   })}]`;
-
-  const [editorValue, setEditorValue] = useState("");
+export const Editor: FC<EditorTypeProps> = ({
+  index,
+  value = "",
+  title = "",
+  isEditable = true,
+  isUpdate = false,
+  lang = null,
+}) => {
+  const [editorValue, setEditorValue] = useState(value);
   const onChange = useCallback((value: string) => {
-    // console.log("value:", value);
+    console.log("value:", index);
   }, []);
 
-  const [language, setLanguage] = useState<LanguageName | null>(null);
+  const [language, setLanguage] = useState<LanguageName | null>(lang);
 
   const extensions: any[] = [
     oneDark,
@@ -37,9 +42,17 @@ export const Editor: FC<EditorType> = ({ index }) => {
 
   return (
     <>
-      <LanguageContext.Provider value={{ language, setLanguage }}>
+      <EditorContext.Provider
+        value={{
+          isUpdate,
+          isEditable,
+          editorData: { index: index, value: editorValue },
+          language,
+          setLanguage,
+        }}
+      >
         <div className="relative border rounded-sm border-slate-700 my-3">
-          <EditorToolbar index={index} />
+          <EditorToolbar index={index} title={title} />
           <div className="absolute z-50 text-xs bg-[#414851] px-2 m-1 right-0 cursor-pointer rounded-md opacity-0 hover:opacity-75 select-none ease-in transition">
             here
           </div>
@@ -47,14 +60,15 @@ export const Editor: FC<EditorType> = ({ index }) => {
             className="focus:border focus:border-slate-500"
             value={editorValue}
             minWidth="0px"
-            height="325px"
+            height={isEditable ? "325px" : "auto"}
             extensions={extensions}
             onChange={onChange}
             theme="dark"
+            editable={isEditable}
           />
           <EditorFooter />
         </div>
-      </LanguageContext.Provider>
+      </EditorContext.Provider>
     </>
   );
 };
