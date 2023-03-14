@@ -111,8 +111,31 @@ pub fn add_code(code: Code) -> Result<Value, Value> {
     Ok(serde_json::to_string(&code).unwrap().into())
 }
 
+#[tauri::command]
+pub fn delete_code_by_id(code_id: u64) -> Result<Value, Value> {
+    let conn = Connection::open("data.db").unwrap();
+
+    match conn.execute("DELETE FROM codes WHERE id = ?1", (code_id,)) {
+        Ok(num_deleted) => {
+            if num_deleted == 0 {
+                return Err(json!("No code with that ID found"));
+            } else {
+                return Ok(json!(format!("Deleted code with ID {}", code_id)));
+            }
+        },
+        Err(e) => {
+            return Err(json!(format!("Failed to delete code with ID {}: {:?}", code_id, e)));
+        }
+    }
+}
+
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
     Builder::new("codes")
-        .invoke_handler(tauri::generate_handler![fetch_codes, fetch_all, add_code])
+        .invoke_handler(tauri::generate_handler![
+            fetch_codes,
+            fetch_all,
+            add_code,
+            delete_code_by_id
+        ])
         .build()
 }

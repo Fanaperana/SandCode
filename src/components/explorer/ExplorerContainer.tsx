@@ -38,6 +38,7 @@ export const ExplorerContainer: FC = () => {
 
   useEffect(() => {
     mainContext?.setExplorer(active as ActiveType);
+    mainContext?.setSnippet({snippet_id: 0});
   }, [active]);
 
   return isShown ? (

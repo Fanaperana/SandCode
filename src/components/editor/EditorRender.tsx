@@ -24,6 +24,7 @@ export const EditorRender: FC = () => {
 
   const [editorIndex, setEditorIndex] = useState(initIndex);
   const [editorList, setEditorList] = useState<Array<EditorResType>>([]);
+  const [refreshListEditor, setRefreshListEditor] = useState(false);
 
   useEffect(() => {
     console.log(mainContext?.snippet?.snippet_id);
@@ -35,14 +36,21 @@ export const EditorRender: FC = () => {
         setEditorList(data);
       })
       .catch((e) => console.error(e));
-  }, [mainContext?.snippet?.snippet_id]);
+  }, [mainContext?.snippet?.snippet_id, refreshListEditor]);
 
   // useEffect(() => {
   //   console.log(editorIndex);
   // }, [editorIndex]);
   return (
     <>
-      <EditorIndexContext.Provider value={{ editorIndex, setEditorIndex }}>
+      <EditorIndexContext.Provider
+        value={{
+          editorIndex,
+          setEditorIndex,
+          refreshListEditor,
+          setRefreshListEditor,
+        }}
+      >
         <div className="grow text-slate-200 bg-[#101718] min-w-[360px] h-full">
           <div className="flex flex-col w-full h-full">
             <div>
@@ -52,6 +60,7 @@ export const EditorRender: FC = () => {
             <div className="grow h-full p-3 overflow-y-auto">
               {editorList.map((item) => (
                 <Editor
+                  key={item.id}
                   index={item.id.toString()}
                   isEditable={false}
                   isUpdate={false}

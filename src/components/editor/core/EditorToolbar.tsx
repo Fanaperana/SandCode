@@ -12,8 +12,12 @@ import { GoTrashcan } from "react-icons/go";
 import {
   HiOutlineCubeTransparent,
   HiOutlineArrowDownTray,
+  HiPencilSquare,
+  HiOutlineTrash,
+  HiOutlineCheckCircle,
+  HiCheckCircle,
+  HiOutlineXCircle,
 } from "react-icons/hi2";
-import { FiEdit3 } from "react-icons/fi";
 import {
   //   loadLanguage,
   //   langNames,
@@ -23,6 +27,9 @@ import {
 import { EditorContext } from "../context";
 import { EditorIndexContext, EditorIndexType } from "../context";
 import * as langext from "../lib/languages";
+import { invoke } from "@tauri-apps/api";
+import { MsgType, Notify } from "../../misc";
+import { Transition } from "@headlessui/react";
 
 interface EditorToolbarType {
   index: string;
@@ -32,6 +39,7 @@ interface EditorToolbarType {
 export const EditorToolbar: FC<EditorToolbarType> = ({ index, title }) => {
   const editorContext = useContext(EditorContext);
   const IndexContext = useContext(EditorIndexContext);
+  const [isReadyToDelete, setIsReadyToDelete] = useState(false);
   const [fileName, setFileName] = useState("");
 
   const setFileExtension = useCallback(
@@ -56,7 +64,7 @@ export const EditorToolbar: FC<EditorToolbarType> = ({ index, title }) => {
    * Delete current editor based on index Date.now()
    */
   const handleDiscard = () => {
-    console.log(IndexContext?.editorIndex);
+    // console.log(IndexContext?.editorIndex);
     IndexContext?.setEditorIndex(
       IndexContext?.editorIndex.filter((d) => d.index !== index)
     );
@@ -65,6 +73,21 @@ export const EditorToolbar: FC<EditorToolbarType> = ({ index, title }) => {
   const handleFileName = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setFileName(event.target.value as string);
     setFileExtension(event.target.value as string);
+    editorContext?.setTitleValue(event.target.value as string);
+  }, []);
+
+  const handleDelete = useCallback(() => {
+    if (parseInt(index)) {
+      invoke("plugin:codes|delete_code_by_id", { codeId: parseInt(index) })
+        .then((res) => {
+          console.log(res);
+          IndexContext?.setRefreshListEditor((oldValue) => !oldValue);
+          Notify(MsgType.INFO, "Snippet Deleted!");
+        })
+        .catch((err) => {
+          Notify(MsgType.ERROR, err);
+        });
+    }
   }, []);
 
   //   const handleFileNameBlur = useCallback(
@@ -120,12 +143,55 @@ export const EditorToolbar: FC<EditorToolbarType> = ({ index, title }) => {
             ))}
           </select>
         ) : (
-          <div className="flex gap-2 items-center justify-center text-slate-500">
-            <FiEdit3 className="hover:text-slate-300" title="Edit" />
-            <HiOutlineArrowDownTray
-              className="hover:text-slate-300"
-              title="Download"
+          <div className="flex gap-3 items-center justify-center text-slate-500">
+            <HiPencilSquare
+              className=" transition-all duration-200 hover:text-slate-300 active:text-slate-400 cursor-pointer select-none"
+              title="Edit"
+              size={20}
             />
+            <HiOutlineArrowDownTray
+              className=" transition-all duration-200 hover:text-slate-300 active:text-slate-400 cursor-pointer select-none"
+              title="Download"
+              size={20}
+            />
+
+            <div className="flex justify-end items-center">
+              {!isReadyToDelete ? (
+                <HiOutlineTrash
+                  className="ml-2 hover:text-red-500 active:text-red-400 cursor-pointer select-none"
+                  title="Delete"
+                  size={20}
+                  onClick={() => setIsReadyToDelete(true)}
+                />
+              ) : (
+                <>
+                  <Transition
+                    show={isReadyToDelete}
+                    appear={true}
+                    enter="transition-opacity duration-1000"
+                    enterFrom="opacity-0"
+                    enterTo="opacity-100"
+                    leave="transition-opacity delay-200 duration-500"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                    className="flex"
+                  >
+                    <HiCheckCircle
+                      className="transition-all duration-300 ml-2 hover:text-red-500 active:text-red-400 text-red-600 cursor-pointer select-none"
+                      title="Confirm Delete"
+                      size={20}
+                      onClick={handleDelete}
+                    />
+                    <HiOutlineXCircle
+                      className="ml-2 hover:text-slate-300 active:text-slate-400 cursor-pointer select-none"
+                      title="Cancel"
+                      size={20}
+                      onClick={() => setIsReadyToDelete(false)}
+                    />
+                  </Transition>
+                </>
+              )}
+            </div>
           </div>
         )}
       </div>
