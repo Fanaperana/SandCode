@@ -6,7 +6,7 @@ SandCode is a Tauri app built with Vue that allows developers to save code snipp
 
 ### Screenshots
 
-![DarkMode](https://github.com/Fanaperana/SandCode/blob/master/screenshots/darkmode-sandcode.png)
+![DarkMode](https://github.com/Fanaperana/SandCode/blob/master/screenshots/darkmode-sandcode.v1.png)
 
 ### Features
 
