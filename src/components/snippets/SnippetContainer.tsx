@@ -107,6 +107,7 @@ export const SnippetContainer: FC = () => {
       } else if (mainContext?.explorer.type === ExplorerType.TAG) {
       }
     }
+    handleActive(0);
   }, [mainContext?.explorer]);
 
   const handleActive = (id: number) => {
@@ -117,6 +118,7 @@ export const SnippetContainer: FC = () => {
   };
 
   useEffect(() => {
+    // Need to do something
     console.log(mainContext?.snippet);
   }, [mainContext?.snippet]);
 

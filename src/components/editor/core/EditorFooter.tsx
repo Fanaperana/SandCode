@@ -2,9 +2,17 @@ import { FC, ChangeEvent, useContext, useState, useEffect } from "react";
 import { langNames, LanguageName } from "@uiw/codemirror-extensions-langs";
 import { EditorContext } from "../context";
 import { HiCodeBracket } from "react-icons/hi2";
+import { MainContext } from "./../../context/MainContext";
+import { invoke } from "@tauri-apps/api";
+import { content } from "./../../../../node_modules/@uiw/codemirror-extensions-events/esm/index";
+import { MsgType, Notify } from "../../misc";
+import { EditorIndexContext } from "./../context/EditorIndex";
 
 export const EditorFooter: FC = () => {
+  const mainContext = useContext(MainContext);
   const editorContext = useContext(EditorContext);
+  const editorIndexContex = useContext(EditorIndexContext);
+
   const [selectedLang, setSelectedLang] = useState("plain/text");
 
   useEffect(() => {
@@ -16,6 +24,35 @@ export const EditorFooter: FC = () => {
   const handleLang = (event: ChangeEvent<HTMLSelectElement>) => {
     editorContext?.setLanguage(event.target.value as LanguageName);
     setSelectedLang(event.target.value as LanguageName);
+  };
+
+  const handleSave = () => {
+    console.log(mainContext?.snippet);
+    console.log(editorContext?.editorData);
+
+    // console.log(editorContext?.language);
+    if (mainContext?.snippet?.snippet_id) {
+      invoke("plugin:codes|add_code", {
+        code: {
+          name: editorContext?.editorData.title,
+          content: editorContext?.editorData.value,
+          lang_type: editorContext?.language
+            ? editorContext?.language
+            : "plain/text",
+          snippet_id: mainContext?.snippet?.snippet_id,
+        },
+      })
+        .then((res) => {
+          // console.log("SUCCESS");
+          // console.log(res);
+          editorIndexContex?.setRefreshListEditor((oldVal) => !oldVal);
+          editorContext?.setEditorValue("");
+          Notify(MsgType.SUCCESS, "Snippet Saved");
+        })
+        .catch((err) => {
+          Notify(MsgType.ERROR, err);
+        });
+    }
   };
 
   const allLang = langNames.map((lang) => (
@@ -50,7 +87,10 @@ export const EditorFooter: FC = () => {
         </div>
         <div>
           {editorContext?.isEditable ? (
-            <button className="px-2 text-slate-200 border rounded-sm border-slate-600 hover:bg-[#485059]">
+            <button
+              className="px-2 text-slate-200 border rounded-sm border-slate-600 hover:bg-[#485059] cursor-pointer select-none"
+              onClick={handleSave}
+            >
               Save
             </button>
           ) : null}
