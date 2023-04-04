@@ -3,6 +3,7 @@
     windows_subsystem = "windows"
 )]
 
+mod api;
 mod cmds;
 mod migrations;
 mod models;
@@ -16,6 +17,7 @@ fn main() {
     tauri::Builder::default()
         .menu(utils::menu_all())
         .on_menu_event(utils::menu_event)
+        .system_tray(api::menutray::meny_tray())
         .plugin(cmds::init())
         .plugin(migrations::init())
         .plugin(models::code::init())

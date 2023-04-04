@@ -16,6 +16,7 @@ import { EditorContext } from "../context/EditorContext";
 import { oneDark } from "@codemirror/theme-one-dark";
 import CodeMirror from "@uiw/react-codemirror";
 import { EditorToolbar, EditorFooter } from "./";
+import { useAppSelector } from "../../../hook";
 // import * as events from "@uiw/codemirror-extensions-events";
 // import { uuid } from "../lib";
 
@@ -36,6 +37,9 @@ export const Editor: FC<EditorTypeProps> = ({
   isUpdate = false,
   lang = null,
 }) => {
+  const eIndex = useAppSelector((state) => state.explorer.explorerIndex);
+  const sIndex = useAppSelector((state) => state.snippet.snippetId);
+  
   const [editorValue, setEditorValue] = useState(value);
   const [titleValue, setTitleValue] = useState(title);
   const onChange = useCallback((value: string) => {

@@ -11,7 +11,15 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "all": true,
+      "fs": {
+        "all": true,
+        "scope": ["$APPDATA/*"]
+      }
+    },
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
     },
     "bundle": {
       "active": true,
@@ -28,7 +36,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "io.sandcode.dev",
+      "identifier": ".sandcode",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -54,6 +62,7 @@
     },
     "windows": [
       {
+        "label": "main",
         "fullscreen": false,
         "height": 600,
         "width": 900,

@@ -3,8 +3,10 @@ import { useState, useEffect, FC, useContext } from "react";
 import { SnippetItem, SeachInput } from "./";
 import { ExplorerType } from "../explorer/types";
 import { MsgType, Notify } from "../misc/notification";
-import { MainContext } from "./../context";
 import "./SnippetContainer.css";
+import { useAppSelector } from "../../hook";
+import { snippetIndex } from "../../slice";
+import { useAppDispatch } from "./../../hook/core";
 
 interface SnippetProps {
   id: number;
@@ -21,8 +23,10 @@ interface SnippetResProps {
 }
 
 export const SnippetContainer: FC = () => {
+  const dispatch = useAppDispatch();
+  const eIndex = useAppSelector((state) => state.explorer.explorerIndex);
+  const sIndex = useAppSelector((state) => state.snippet.snippetId);
   const [isShown, setIsShown] = useState(true);
-  const mainContext = useContext(MainContext);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -44,14 +48,10 @@ export const SnippetContainer: FC = () => {
 
   const [snippetList, setSnippetList] = useState<SnippetResProps[]>([]);
 
-  const [activeIndex, setActiveIndex] = useState(
-    mainContext?.snippet?.snippet_id as number
-  );
-
   useEffect(() => {
-    if (mainContext?.explorer) {
-      if (mainContext?.explorer.type === ExplorerType.FAVORITE) {
-        switch (mainContext?.explorer.index) {
+    if (eIndex) {
+      if (eIndex.type === ExplorerType.FAVORITE) {
+        switch (eIndex.index) {
           // Fetch all snippets
           case 1: {
             invoke("plugin:snippets|fetch_all")
@@ -78,9 +78,9 @@ export const SnippetContainer: FC = () => {
             break;
           }
         }
-      } else if (mainContext?.explorer.type === ExplorerType.FOLDER) {
+      } else if (eIndex.type === ExplorerType.FOLDER) {
         invoke("plugin:snippets|fetch_snippet_by_folder", {
-          folderId: mainContext?.explorer.index,
+          folderId: eIndex.index,
         })
           .then((res) => {
             if (typeof res == "object") {
@@ -104,23 +104,15 @@ export const SnippetContainer: FC = () => {
           .catch((err) => {
             Notify(MsgType.ERROR, err);
           });
-      } else if (mainContext?.explorer.type === ExplorerType.TAG) {
+      } else if (eIndex.type === ExplorerType.TAG) {
       }
     }
     handleActive(0);
-  }, [mainContext?.explorer]);
+  }, [eIndex]);
 
   const handleActive = (id: number) => {
-    setActiveIndex(id);
-    mainContext?.setSnippet({ snippet_id: id });
-    // console.log(id);
-    // console.log(mainContext?.snippet);
+    dispatch(snippetIndex(id));
   };
-
-  useEffect(() => {
-    // Need to do something
-    console.log(mainContext?.snippet);
-  }, [mainContext?.snippet]);
 
   if (!isShown) {
     return null;
@@ -139,10 +131,10 @@ export const SnippetContainer: FC = () => {
                   <div key={s.id} onClick={() => handleActive(s.id)}>
                     <SnippetItem
                       title={s.name}
-                      fileName={mainContext?.explorer?.type || ""}
+                      fileName={eIndex.type || ""}
                       time={s.timestamp.split(" ")[0]}
-                      activeIndex={activeIndex}
-                      className={s.id === activeIndex ? "active" : ""}
+                      activeIndex={sIndex}
+                      className={s.id === sIndex ? "active" : ""}
                     />
                   </div>
                 ))

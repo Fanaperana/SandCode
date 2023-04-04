@@ -13,7 +13,9 @@
     "@codemirror/theme-one-dark": "^6.1.0",
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.16",
+    "@reduxjs/toolkit": "^1.9.3",
     "@tauri-apps/api": "^1.2.0",
+    "@types/react-redux": "^7.1.25",
     "@uiw/codemirror-extensions-basic-setup": "^4.19.5",
     "@uiw/codemirror-extensions-events": "^4.19.9",
     "@uiw/codemirror-extensions-langs": "^4.19.5",
@@ -22,7 +24,9 @@
     "@uiw/react-codemirror": "^4.19.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.8.0"
+    "react-icons": "^4.8.0",
+    "react-redux": "^8.0.5",
+    "redux": "^4.2.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",

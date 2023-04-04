@@ -1,4 +1,4 @@
-import { createContext } from 'react';
-import { ActiveContextType } from '../types/Active';
+// import { createContext } from 'react';
+// import { ActiveContextType } from '../types/Active';
 
-export const ActiveContext = createContext<ActiveContextType | null>(null);
+// export const ActiveContext = createContext<ActiveContextType | null>(null);

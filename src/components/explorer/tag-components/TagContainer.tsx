@@ -7,13 +7,16 @@ import {
   BaseSyntheticEvent,
 } from "react";
 import { GoPlus, GoX, GoTag } from "react-icons/go";
-import { ActiveContext } from "../contexts/ActiveContext";
 import { invoke } from "@tauri-apps/api/tauri";
 import { TagItem } from "./";
 import { Modal } from "../../misc/";
 import { ExplorerType } from "../types";
+import { useAppDispatch, useAppSelector } from "../../../hook";
+import { explorerIndex } from "../../../slice";
 
 export const TagContainer: FC = () => {
+  const index = useAppSelector((state) => state.explorer.explorerIndex);
+  const dispatch = useAppDispatch();
   const tags = [
     {
       id: 1,
@@ -37,10 +40,9 @@ export const TagContainer: FC = () => {
   const [tagName, setTagName] = useState("");
   const [refreshList, setRefreshList] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const activeContext = useContext(ActiveContext);
 
   const handleActive = (id: number) => {
-    activeContext?.setActive({ index: id, type: ExplorerType.TAG });
+    dispatch(explorerIndex({ index: id, type: ExplorerType.TAG }));
   };
 
   const handleCreateTag = () => {
@@ -160,10 +162,7 @@ export const TagContainer: FC = () => {
                 name={f.name}
                 color={f.color}
                 classStyle={`${
-                  activeContext?.active.index === f.id &&
-                  activeContext?.active.type === "tag"
-                    ? "active"
-                    : ""
+                  index.index === f.id && index.type === "tag" ? "active" : ""
                 }`}
               />
             </li>

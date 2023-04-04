@@ -2,14 +2,16 @@ import { FC, ChangeEvent, useContext, useState, useEffect } from "react";
 import { langNames, LanguageName } from "@uiw/codemirror-extensions-langs";
 import { EditorContext } from "../context";
 import { HiCodeBracket } from "react-icons/hi2";
-import { MainContext } from "./../../context/MainContext";
 import { invoke } from "@tauri-apps/api";
-import { content } from "./../../../../node_modules/@uiw/codemirror-extensions-events/esm/index";
 import { MsgType, Notify } from "../../misc";
 import { EditorIndexContext } from "./../context/EditorIndex";
+import { useAppSelector, useAppDispatch } from "../../../hook";
 
 export const EditorFooter: FC = () => {
-  const mainContext = useContext(MainContext);
+  const eIndex = useAppSelector((state) => state.explorer.explorerIndex);
+  const sIndex = useAppSelector((state) => state.snippet.snippetId);
+  const dispatch = useAppDispatch();
+
   const editorContext = useContext(EditorContext);
   const editorIndexContex = useContext(EditorIndexContext);
 
@@ -27,11 +29,8 @@ export const EditorFooter: FC = () => {
   };
 
   const handleSave = () => {
-    console.log(mainContext?.snippet);
     console.log(editorContext?.editorData);
-
-    // console.log(editorContext?.language);
-    if (mainContext?.snippet?.snippet_id) {
+    if (sIndex) {
       invoke("plugin:codes|add_code", {
         code: {
           name: editorContext?.editorData.title,
@@ -39,12 +38,10 @@ export const EditorFooter: FC = () => {
           lang_type: editorContext?.language
             ? editorContext?.language
             : "plain/text",
-          snippet_id: mainContext?.snippet?.snippet_id,
+          snippet_id: sIndex,
         },
       })
         .then((res) => {
-          // console.log("SUCCESS");
-          // console.log(res);
           editorIndexContex?.setRefreshListEditor((oldVal) => !oldVal);
           editorContext?.setEditorValue("");
           Notify(MsgType.SUCCESS, "Snippet Saved");

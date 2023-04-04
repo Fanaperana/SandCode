@@ -1,19 +1,17 @@
 import { FC, useState, useContext, useEffect } from "react";
 import { FavoriteContainer, FolderContainer, TagContainer } from "./";
 import { ExplorerToolbar } from "./misc";
-import { ActiveContext } from "./contexts";
-import { ActiveType, ExplorerType } from "./types";
-import { MainContext } from "../context";
+import { useAppSelector, useAppDispatch } from "../../hook";
+import { snippetIndex } from "../../slice";
+
 import "./utils";
 
 export const ExplorerContainer: FC = () => {
-  // Initial state use to the side explorer
-  const toActive: ActiveType = {
-    index: 1,
-    type: ExplorerType.FAVORITE,
-  };
-
   const [isShown, setIsShown] = useState(true);
+  const eIndex = useAppSelector((state) => state.explorer.explorerIndex);
+  const sIndex = useAppSelector((state) => state.snippet.snippetId);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -31,32 +29,25 @@ export const ExplorerContainer: FC = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isShown]);
-
-  const mainContext = useContext(MainContext);
-  const [active, setActive] = useState<ActiveType>(toActive);
+  }, [isShown, setIsShown]);
 
   useEffect(() => {
-    mainContext?.setExplorer(active as ActiveType);
-    mainContext?.setSnippet({snippet_id: 0});
-  }, [active]);
+    dispatch(snippetIndex(0));
+  }, [eIndex]);
 
-  return isShown ? (
-    <div
-      className="flex flex-col min-w-[200px] max-w-[200px] text-slate-400 text-sm bg-[#151515] h-full"
-      id="explorer"
-    >
-      <ActiveContext.Provider
-        value={{
-          active,
-          setActive,
-        }}
-      >
-        <ExplorerToolbar />
-        <FavoriteContainer />
-        <FolderContainer />
-        <TagContainer />
-      </ActiveContext.Provider>
-    </div>
-  ) : null;
+  return (
+    <>
+      {isShown && (
+        <div
+          className="flex flex-col min-w-[200px] max-w-[200px] text-slate-400 text-sm bg-[#151515] h-full"
+          id="explorer"
+        >
+          <ExplorerToolbar />
+          <FavoriteContainer />
+          <FolderContainer />
+          <TagContainer />
+        </div>
+      )}
+    </>
+  );
 };

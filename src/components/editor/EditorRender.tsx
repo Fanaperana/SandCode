@@ -1,10 +1,10 @@
 import { Editor, EditorHeader } from "./";
-import { useState, useEffect, FC, useContext } from "react";
+import { useState, useEffect, FC, useContext, useMemo } from "react";
 import { EditorIndexContext, EditorIndexType } from "./context";
 import { uuid } from "./lib";
 import { invoke } from "@tauri-apps/api/tauri";
-import { MainContext } from "../context";
 import { LanguageName } from "@uiw/codemirror-extensions-langs";
+import { useAppDispatch, useAppSelector } from "./../../hook/core";
 
 interface EditorResType {
   id: number;
@@ -20,27 +20,43 @@ export const EditorRender: FC = () => {
     },
   ];
 
-  const mainContext = useContext(MainContext);
+  // const dispatch = useAppDispatch();
+  // const eIndex = useAppSelector((state) => state.explorer.explorerIndex);
+  const { snippetId } = useAppSelector((state) => state.snippet);
 
   const [editorIndex, setEditorIndex] = useState(initIndex);
   const [editorList, setEditorList] = useState<Array<EditorResType>>([]);
   const [refreshListEditor, setRefreshListEditor] = useState(false);
 
   useEffect(() => {
-    console.log(mainContext?.snippet?.snippet_id);
-    invoke("plugin:codes|fetch_codes", {
-      sniptId: mainContext?.snippet?.snippet_id,
-    })
-      .then((res) => {
-        const data: Array<EditorResType> = res as Array<EditorResType>;
-        setEditorList(data);
+    if (snippetId) {
+      invoke("plugin:codes|fetch_codes", {
+        sniptId: snippetId,
       })
-      .catch((e) => console.error(e));
-  }, [mainContext?.snippet?.snippet_id, refreshListEditor]);
+        .then((res) => {
+          const data: Array<EditorResType> = res as Array<EditorResType>;
+          setEditorList(data);
+        })
+        .catch((e) => console.error(e));
+    }
+  }, [snippetId, refreshListEditor]);
 
-  // useEffect(() => {
-  //   console.log(editorIndex);
-  // }, [editorIndex]);
+  const memoizedEditors = useMemo(
+    () =>
+      editorList.map((item) => (
+        <Editor
+          key={item.id}
+          index={item.id.toString()}
+          isEditable={false}
+          isUpdate={false}
+          value={item.content}
+          lang={item.lang_type as LanguageName}
+          title={item.name}
+        />
+      )),
+    [editorList]
+  );
+
   return (
     <>
       <EditorIndexContext.Provider
@@ -58,23 +74,13 @@ export const EditorRender: FC = () => {
             </div>
             {/* START EDITOR */}
             <div className="grow h-full p-3 overflow-y-auto">
-              {editorList.map((item) => (
-                <Editor
-                  key={item.id}
-                  index={item.id.toString()}
-                  isEditable={false}
-                  isUpdate={false}
-                  value={item.content}
-                  lang={item.lang_type as LanguageName}
-                  title={item.name}
-                />
-              ))}
+              {memoizedEditors}
 
-              {editorList.length ? (
+              {editorList.length >0 && (
                 <div className="text-xs my-5 relative h-1 w-full after:absolute after:left-[45%] after:right-[45%] after:content-['Editor'] after:-top-2 after:bg-gradient-to-r after:from-[#101718] after:via-[#101718] after:to-[#101718] after:px-3 after:text-center after:border-x-2 after:border-slate-700 after:font-mono after:text-slate-500 after:tracking-wide after:rounded-3xl after:min-w-[80px] after:max-w-[80px]">
                   <hr className="border-0 h-[3px] bg-gradient-to-r from-slate-800/10 via-slate-600 to-slate-800/10 relative after:content['Editor'] after:absolute after:top-0 after:text-white" />
                 </div>
-              ) : null}
+              )}
 
               {editorIndex.map((d) => (
                 <Editor key={d.index} index={d.index} />

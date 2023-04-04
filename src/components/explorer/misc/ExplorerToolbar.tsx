@@ -1,10 +1,10 @@
 import { useContext, FC } from "react";
 import { GoKebabHorizontal } from "react-icons/go";
 // import { ActiveClass } from "../utils/ActiveClass";
-import { ActiveContext } from "../contexts/ActiveContext";
+// import { ActiveContext } from "../contexts/ActiveContext";
 
 export const ExplorerToolbar: FC = () => {
-  const myActive = useContext(ActiveContext);
+  // const myActive = useContext(ActiveContext);
 
   return (
     <div className="flex justify-between w-full text-slate-500 font-bold border-b border-slate-700 p-1 pb-0 bg-black">

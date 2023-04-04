@@ -1,11 +1,14 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { FavoriteItem } from "./FavoriteItem";
-import { ActiveContext } from "../contexts/ActiveContext";
 import { GoPlus } from "react-icons/go";
-import { ActiveType } from "../types/";
 import { ExplorerType } from "../types/";
+import { useAppSelector, useAppDispatch } from "../../../hook";
+import { explorerIndex } from "../../../slice";
 
 export const FavoriteContainer: FC = () => {
+  const index = useAppSelector((state) => state.explorer.explorerIndex);
+  const dispatch = useAppDispatch();
+
   const favorites = [
     {
       id: 1,
@@ -24,10 +27,8 @@ export const FavoriteContainer: FC = () => {
     },
   ];
 
-  const activeContext = useContext(ActiveContext);
-
   const handleActive = (id: number) => {
-    activeContext?.setActive({ index: id, type: ExplorerType.FAVORITE });
+    dispatch(explorerIndex({ index: id, type: ExplorerType.FAVORITE }));
   };
 
   return (
@@ -54,8 +55,7 @@ export const FavoriteContainer: FC = () => {
                 name={f.name}
                 icon={f.icon}
                 classStyle={`${
-                  activeContext?.active.index === f.id &&
-                  activeContext?.active.type === "favorite"
+                  index.index === f.id && index.type === "favorite"
                     ? "active"
                     : ""
                 }`}

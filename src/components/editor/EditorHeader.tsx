@@ -1,7 +1,6 @@
 import { FC, useState, useEffect, useContext } from "react";
 import { EditorInputTag } from "./EditorInputTag";
 import { invoke } from "@tauri-apps/api";
-import { MainContext } from "./../context/MainContext";
 import {
   GoListUnordered,
   GoCloudDownload,
@@ -9,6 +8,7 @@ import {
   GoRepo,
   GoPencil,
 } from "react-icons/go";
+import { useAppSelector } from "../../hook";
 
 interface SnippetType {
   id: number;
@@ -20,12 +20,13 @@ interface SnippetType {
 export const EditorHeader: FC = () => {
   const [headerTitle, setHeaderTitle] = useState("");
   const [editTitle, setEditTitle] = useState(false);
-  const mainContext = useContext(MainContext);
+  const sIndex = useAppSelector((state) => state.snippet.snippetId);
+  const eIndex = useAppSelector((state) => state.explorer.explorerIndex);
 
   useEffect(() => {
-    if (mainContext?.snippet?.snippet_id) {
+    if (sIndex) {
       invoke("plugin:snippets|fetch_snippet", {
-        snippetId: mainContext?.snippet.snippet_id,
+        snippetId: sIndex,
       }).then((res) => {
         const data: SnippetType = res as SnippetType;
 
@@ -36,7 +37,7 @@ export const EditorHeader: FC = () => {
     } else {
       setHeaderTitle("");
     }
-  }, [mainContext?.snippet, mainContext?.explorer]);
+  }, [sIndex, eIndex]);
 
   return (
     <div className="divide-y divide-slate-700/70 w-full">
