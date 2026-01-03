@@ -1,9 +1,9 @@
 import { FC, useState, useEffect, useContext } from "react";
 import { EditorInputTag } from "./EditorInputTag";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import {
   GoListUnordered,
-  GoCloudDownload,
+  GoDownload,
   GoFold,
   GoRepo,
   GoPencil,
@@ -25,7 +25,7 @@ export const EditorHeader: FC = () => {
 
   useEffect(() => {
     if (sIndex) {
-      invoke("plugin:snippets|fetch_snippet", {
+      invoke("fetch_snippet", {
         snippetId: sIndex,
       }).then((res) => {
         const data: SnippetType = res as SnippetType;
@@ -64,7 +64,7 @@ export const EditorHeader: FC = () => {
               title="Download all snippets"
               className="border border-slate-600/20 p-1 rounded-sm text-slate-600 hover:text-slate-200 hover:bg-slate-700/50 active:text-slate-300 active:bg-slate-700/30"
             >
-              <GoCloudDownload />
+              <GoDownload />
             </button>
             <button
               title="View all snippets"

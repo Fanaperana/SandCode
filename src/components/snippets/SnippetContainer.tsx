@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { useState, useEffect, FC, useContext } from "react";
 import { SnippetItem, SeachInput } from "./";
 import { ExplorerType } from "../explorer/types";
@@ -54,7 +54,7 @@ export const SnippetContainer: FC = () => {
         switch (eIndex.index) {
           // Fetch all snippets
           case 1: {
-            invoke("plugin:snippets|fetch_all")
+            invoke("fetch_all_snippets")
               .then((res) => {
                 if (typeof res === "object") {
                   const data: Array<SnippetResProps> =
@@ -79,7 +79,7 @@ export const SnippetContainer: FC = () => {
           }
         }
       } else if (eIndex.type === ExplorerType.FOLDER) {
-        invoke("plugin:snippets|fetch_snippet_by_folder", {
+        invoke("fetch_snippet_by_folder", {
           folderId: eIndex.index,
         })
           .then((res) => {
@@ -132,7 +132,7 @@ export const SnippetContainer: FC = () => {
                     <SnippetItem
                       title={s.name}
                       fileName={eIndex.type || ""}
-                      time={s.timestamp.split(" ")[0]}
+                      time={s.timestamp?.split(" ")[0] || ""}
                       activeIndex={sIndex}
                       className={s.id === sIndex ? "active" : ""}
                     />

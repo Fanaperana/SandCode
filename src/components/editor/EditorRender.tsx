@@ -2,7 +2,7 @@ import { Editor, EditorHeader } from "./";
 import { useState, useEffect, FC, useContext, useMemo } from "react";
 import { EditorIndexContext, EditorIndexType } from "./context";
 import { uuid } from "./lib";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { LanguageName } from "@uiw/codemirror-extensions-langs";
 import { useAppDispatch, useAppSelector } from "./../../hook/core";
 
@@ -30,7 +30,7 @@ export const EditorRender: FC = () => {
 
   useEffect(() => {
     if (snippetId) {
-      invoke("plugin:codes|fetch_codes", {
+      invoke("fetch_codes", {
         sniptId: snippetId,
       })
         .then((res) => {

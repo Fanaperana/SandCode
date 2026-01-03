@@ -9,7 +9,7 @@ import {
 import { GoPlus, GoX, GoSync } from "react-icons/go";
 import { FolderItem } from "./FolderItem";
 import { Modal } from "../../misc/";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { ExplorerType } from "../types/Active";
 import { useAppSelector, useAppDispatch } from "../../../hook";
@@ -33,7 +33,7 @@ export const FolderContainer: FC = () => {
       console.log(event.payload);
     });
 
-    invoke("plugin:folders|fetch_all")
+    invoke("fetch_all_folders")
       .then((res) => {
         const foldersList = res as Folder[];
         if (foldersList.length) {
@@ -55,7 +55,7 @@ export const FolderContainer: FC = () => {
 
   const handleCreateFolder = () => {
     if (folderName) {
-      invoke("plugin:folders|add_folder", {
+      invoke("add_folder", {
         folder: { name: folderName },
       })
         .then(() => {

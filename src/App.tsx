@@ -1,5 +1,5 @@
 import { useState, FC, ChangeEvent, useContext, useEffect } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { Dialog, Transition } from "@headlessui/react";
 
 import { EditorRender } from "./components/editor";

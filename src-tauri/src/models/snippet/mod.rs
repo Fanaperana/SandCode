@@ -45,7 +45,7 @@ pub struct Payload {
 }
 
 #[tauri::command]
-fn fetch_all() -> Result<Value, Value> {
+pub fn fetch_all_snippets() -> Result<Value, Value> {
     let conn = Connection::open("data.db").unwrap();
     let mut stmt = conn.prepare("SELECT * FROM snippets").unwrap();
 
@@ -218,17 +218,18 @@ pub fn add_snippet<R: Runtime>(
     }
 }
 
-pub fn init<R: Runtime>() -> TauriPlugin<R> {
-    Builder::new("snippets")
-        .invoke_handler(tauri::generate_handler![
-            fetch_all,
-            fetch_snippet,
-            fetch_snippet_by_folder,
-            fetch_snippet_by_tag,
-            add_snippet
-        ])
-        .build()
-}
+// Plugin init function - no longer used, commands are registered in main.rs
+// pub fn init<R: Runtime>() -> TauriPlugin<R> {
+//     Builder::new("snippets")
+//         .invoke_handler(tauri::generate_handler![
+//             fetch_all_snippets,
+//             fetch_snippet,
+//             fetch_snippet_by_folder,
+//             fetch_snippet_by_tag,
+//             add_snippet
+//         ])
+//         .build()
+// }
 
 // struct Person {
 //     id: i32,

@@ -7,7 +7,7 @@ import {
   BaseSyntheticEvent,
 } from "react";
 import { GoPlus, GoX, GoTag } from "react-icons/go";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 import { TagItem } from "./";
 import { Modal } from "../../misc/";
 import { ExplorerType } from "../types";
@@ -47,7 +47,7 @@ export const TagContainer: FC = () => {
 
   const handleCreateTag = () => {
     if (tagName) {
-      invoke("plugin:folders|add_tag", {
+      invoke("add_tag", {
         tag: { name: tagName },
       })
         .then(() => {

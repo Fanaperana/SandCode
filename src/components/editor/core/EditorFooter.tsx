@@ -2,7 +2,7 @@ import { FC, ChangeEvent, useContext, useState, useEffect } from "react";
 import { langNames, LanguageName } from "@uiw/codemirror-extensions-langs";
 import { EditorContext } from "../context";
 import { HiCodeBracket } from "react-icons/hi2";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { MsgType, Notify } from "../../misc";
 import { EditorIndexContext } from "./../context/EditorIndex";
 import { useAppSelector, useAppDispatch } from "../../../hook";
@@ -31,7 +31,7 @@ export const EditorFooter: FC = () => {
   const handleSave = () => {
     console.log(editorContext?.editorData);
     if (sIndex) {
-      invoke("plugin:codes|add_code", {
+      invoke("add_code", {
         code: {
           name: editorContext?.editorData.title,
           content: editorContext?.editorData.value,

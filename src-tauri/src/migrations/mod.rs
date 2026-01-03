@@ -78,7 +78,7 @@ fn create_tables(conn: &Connection) -> rusqlite::Result<()> {
 }
 
 #[tauri::command]
-fn create_tables_command() -> Result<Value, Value> {
+pub fn create_tables_command() -> Result<Value, Value> {
     let conn = rusqlite::Connection::open("data.db").unwrap();
     create_tables(&conn).unwrap();
     Ok(Value::Null)

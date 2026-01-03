@@ -63,7 +63,7 @@ pub fn fetch_codes(snipt_id: u64) -> Result<Value, Value> {
 }
 
 #[tauri::command]
-pub fn fetch_all() -> Result<Value, Value> {
+pub fn fetch_all_codes() -> Result<Value, Value> {
     let conn = Connection::open("data.db").unwrap();
     let mut stmt = conn
         .prepare("SELECT id, name, content, lang_type, snippet_id FROM codes")
@@ -129,13 +129,14 @@ pub fn delete_code_by_id(code_id: u64) -> Result<Value, Value> {
     }
 }
 
-pub fn init<R: Runtime>() -> TauriPlugin<R> {
-    Builder::new("codes")
-        .invoke_handler(tauri::generate_handler![
-            fetch_codes,
-            fetch_all,
-            add_code,
-            delete_code_by_id
-        ])
-        .build()
-}
+// Plugin init function - no longer used, commands are registered in main.rs
+// pub fn init<R: Runtime>() -> TauriPlugin<R> {
+//     Builder::new("codes")
+//         .invoke_handler(tauri::generate_handler![
+//             fetch_codes,
+//             fetch_all_codes,
+//             add_code,
+//             delete_code_by_id
+//         ])
+//         .build()
+// }

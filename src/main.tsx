@@ -3,9 +3,8 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./assets/css/index.css";
 
-import { globalShortcut } from "@tauri-apps/api";
-import { unregister, register } from "@tauri-apps/api/globalShortcut";
-import { BaseDirectory, createDir } from "@tauri-apps/api/fs";
+import { unregister, register } from "@tauri-apps/plugin-global-shortcut";
+import { BaseDirectory, mkdir } from "@tauri-apps/plugin-fs";
 import { store } from "./store";
 import { Provider } from "react-redux";
 
@@ -17,8 +16,16 @@ import { Provider } from "react-redux";
 // });
 // Unregister the conflicting shortcut before registering a new one
 const init = async () => {
-  await unregister("Ctrl+G");
-  await unregister("Ctrl+T");
+  try {
+    await unregister("Ctrl+G");
+  } catch (e) {
+    // Shortcut may not be registered yet, ignore
+  }
+  try {
+    await unregister("Ctrl+T");
+  } catch (e) {
+    // Shortcut may not be registered yet, ignore
+  }
 
   await register("Ctrl+G", (shortcut) => {
     console.log(`Shortcut ${shortcut} triggered`);
@@ -26,8 +33,8 @@ const init = async () => {
 
   await register("Ctrl+T", async (shortcut) => {
     console.log(BaseDirectory.App);
-    const d = await createDir("user", {
-      dir: BaseDirectory.AppData,
+    const d = await mkdir("user", {
+      baseDir: BaseDirectory.AppData,
       recursive: true,
     });
     console.log(d);

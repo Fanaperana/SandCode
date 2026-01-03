@@ -1,41 +1,44 @@
-use tauri::{CustomMenuItem, Menu, Submenu, WindowMenuEvent};
+use tauri::{
+    menu::{Menu, MenuItem, Submenu},
+    App, Manager,
+};
 
-pub fn menu_all() -> Menu {
-    let file_submenu = file_submenu();
-    let help_submenu = help_submenu();
+pub fn setup_menu(app: &App) -> Result<(), Box<dyn std::error::Error>> {
+    let file_submenu = file_submenu(app)?;
+    let help_submenu = help_submenu(app)?;
 
-    let menu = Menu::new()
-        .add_submenu(file_submenu)
-        .add_submenu(help_submenu);
-    // .add_native_item(MenuItem::Copy)
-    // .add_item(CustomMenuItem::new("hide", "Hide"));
-    return menu;
-}
+    let menu = Menu::with_items(app, &[&file_submenu, &help_submenu])?;
 
-pub fn menu_event(event: WindowMenuEvent) {
-    match event.menu_item_id() {
-        "quit" => {
-            std::process::exit(0);
-        }
-        "close" => {
-            event.window().close().unwrap();
-        }
-        _ => {
-            println!("{}", event.menu_item_id());
-        }
+    if let Some(window) = app.get_webview_window("main") {
+        window.set_menu(menu)?;
+        window.on_menu_event(move |window, event| {
+            match event.id.as_ref() {
+                "quit" => {
+                    std::process::exit(0);
+                }
+                "close" => {
+                    let _ = window.close();
+                }
+                _ => {
+                    println!("{}", event.id.as_ref());
+                }
+            }
+        });
     }
+
+    Ok(())
 }
 
-pub(crate) fn file_submenu() -> Submenu {
-    let close = CustomMenuItem::new("close".to_string(), "Close");
-    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+fn file_submenu(app: &App) -> Result<Submenu<tauri::Wry>, Box<dyn std::error::Error>> {
+    let quit = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
+    let close = MenuItem::with_id(app, "close", "Close", true, None::<&str>)?;
 
-    Submenu::new("File", Menu::new().add_item(quit).add_item(close))
+    Ok(Submenu::with_items(app, "File", true, &[&quit, &close])?)
 }
 
-pub(crate) fn help_submenu() -> Submenu {
-    let keybr = CustomMenuItem::new("keybr".to_string(), "Keyboard Shortcuts References");
-    let about = CustomMenuItem::new("about".to_string(), "About");
+fn help_submenu(app: &App) -> Result<Submenu<tauri::Wry>, Box<dyn std::error::Error>> {
+    let keybr = MenuItem::with_id(app, "keybr", "Keyboard Shortcuts References", true, None::<&str>)?;
+    let about = MenuItem::with_id(app, "about", "About", true, None::<&str>)?;
 
-    Submenu::new("Help", Menu::new().add_item(keybr).add_item(about))
+    Ok(Submenu::with_items(app, "Help", true, &[&keybr, &about])?)
 }

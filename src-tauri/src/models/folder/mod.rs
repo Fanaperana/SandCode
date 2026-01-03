@@ -10,7 +10,7 @@
 
 use tauri::{
     plugin::{Builder, TauriPlugin},
-    AppHandle, Runtime, Window,
+    AppHandle, Emitter, Runtime, Window,
 };
 
 use rusqlite::{params, Connection, Result};
@@ -35,7 +35,7 @@ pub struct Payload {
 }
 
 #[tauri::command]
-fn fetch_all() -> Result<Value, Value> {
+pub fn fetch_all_folders() -> Result<Value, Value> {
     let conn = Connection::open("data.db").unwrap();
     let mut stmt = conn.prepare("SELECT * FROM folders").unwrap();
 
@@ -145,15 +145,16 @@ pub fn add_folder<R: Runtime>(
     }
 }
 
-pub fn init<R: Runtime>() -> TauriPlugin<R> {
-    Builder::new("folders")
-        .invoke_handler(tauri::generate_handler![
-            fetch_all,
-            fetch_folder,
-            add_folder
-        ])
-        .build()
-}
+// Plugin init function - no longer used, commands are registered in main.rs
+// pub fn init<R: Runtime>() -> TauriPlugin<R> {
+//     Builder::new("folders")
+//         .invoke_handler(tauri::generate_handler![
+//             fetch_all_folders,
+//             fetch_folder,
+//             add_folder
+//         ])
+//         .build()
+// }
 
 // struct Person {
 //     id: i32,

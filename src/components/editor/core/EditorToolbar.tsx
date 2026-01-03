@@ -8,7 +8,7 @@ import {
   ReactNode,
   useCallback,
 } from "react";
-import { GoTrashcan } from "react-icons/go";
+import { GoTrash } from "react-icons/go";
 import {
   HiOutlineCubeTransparent,
   HiOutlineArrowDownTray,
@@ -27,7 +27,7 @@ import {
 import { EditorContext } from "../context";
 import { EditorIndexContext, EditorIndexType } from "../context";
 import * as langext from "../lib/languages";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import { MsgType, Notify } from "../../misc";
 import { Transition } from "@headlessui/react";
 
@@ -78,7 +78,7 @@ export const EditorToolbar: FC<EditorToolbarType> = ({ index, title }) => {
 
   const handleDelete = useCallback(() => {
     if (parseInt(index)) {
-      invoke("plugin:codes|delete_code_by_id", { codeId: parseInt(index) })
+      invoke("delete_code_by_id", { codeId: parseInt(index) })
         .then((res) => {
           console.log(res);
           IndexContext?.setRefreshListEditor((oldValue) => !oldValue);
@@ -114,7 +114,7 @@ export const EditorToolbar: FC<EditorToolbarType> = ({ index, title }) => {
               onClick={handleDiscard}
               className="text-[#e5534b] bg-[#373e47] border border-slate-600 rounded-r-md px-2 hover:bg-[#bd3f38] hover:text-slate-100"
             >
-              <GoTrashcan size="" />
+              <GoTrash size="" />
             </button>
           ) : null}
         </div>
